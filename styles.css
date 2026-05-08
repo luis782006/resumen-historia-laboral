@@ -1,0 +1,311 @@
+:root {
+    --bg-main: #27272F;
+    --bg-panel: #32333D;
+    --accent-cyan: #2CA2BF;
+    --accent-orange: #CF7023;
+    --text-main: #BEBEB7;
+    --text-white: #FFFFFF;
+    --glass-bg: rgba(50, 51, 61, 0.7);
+    --glass-border: rgba(190, 190, 183, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1600px;
+    background: var(--bg-panel);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    transition: transform 0.3s ease;
+}
+
+h1 {
+    color: var(--text-white);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.upload-section {
+    margin: 40px 0;
+    padding: 40px;
+    border: 2px dashed var(--accent-cyan);
+    border-radius: 16px;
+    background: var(--glass-bg);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.upload-section:hover {
+    background: rgba(44, 162, 191, 0.05);
+    border-color: var(--accent-orange);
+    transform: translateY(-2px);
+}
+
+.upload-section i {
+    font-size: 3rem;
+    color: var(--accent-cyan);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.upload-text {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.upload-hint {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+#file-input {
+    display: none;
+}
+
+.header-output {
+    margin-top: 50px;
+    padding: 30px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #32333d, #2c2c34);
+    border-left: 4px solid var(--accent-orange);
+    display: none;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.header-output h2 {
+    color: var(--text-white);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.header-output .date {
+    color: var(--accent-cyan);
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.btn-primary {
+    background: var(--accent-cyan);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background: #258ca5;
+    transform: scale(1.02);
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 30px;
+    margin-top: 40px;
+    width: 100%;
+    max-width: 1400px;
+}
+
+.panel {
+    background: var(--bg-panel);
+    border-radius: 20px;
+    padding: 25px;
+    border: 1px solid var(--glass-border);
+    height: fit-content;
+}
+
+.panel-title {
+    font-size: 1.2rem;
+    color: var(--text-white);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.select-group {
+    margin-bottom: 25px;
+}
+
+.select-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+select {
+    width: 100%;
+    background: var(--bg-main);
+    color: var(--text-main);
+    border: 1px solid var(--glass-border);
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+}
+
+.escalafon-list {
+    max-height: 500px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+.escalafon-item {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+}
+
+.escalafon-item:hover {
+    background: rgba(255, 255, 255, 0.07);
+    transform: translateX(5px);
+}
+
+.escalafon-item.active {
+    background: rgba(44, 162, 191, 0.15);
+    border-left-color: var(--accent-cyan);
+}
+
+.escalafon-name {
+    color: var(--text-white);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.escalafon-count {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-top: 4px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: var(--bg-panel);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    text-align: left;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent-orange);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.chart-container {
+    background: var(--bg-panel);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    min-height: 500px;
+    position: relative;
+}
+
+.back-btn {
+    display: none;
+    background: var(--bg-main);
+    color: var(--accent-cyan);
+    border: 1px solid var(--accent-cyan);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: var(--accent-cyan);
+    color: white;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    opacity: 0.5;
+}
+
+.legend-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+}
+
+@media (max-width: 1100px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+}
+
+.footer {
+    margin-top: 50px;
+    padding: 30px;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    text-align: center;
+}

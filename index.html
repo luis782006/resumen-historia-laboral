@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial Laboral - Informe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <!-- Lucide Icons for premium feel -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>RESUMEN DE HISTORIA LABORAL</h1>
+        
+        <div class="upload-section" id="drop-zone">
+            <i data-lucide="upload-cloud"></i>
+            <p class="upload-text">Seleccione o arrastre el archivo de Historia Laboral</p>
+            <p class="upload-hint">Formatos aceptados: PDF, DOCX, TXT</p>
+            <input type="file" id="file-input" hidden>
+            <button class="btn-primary">Explorar Archivos</button>
+        </div>
+
+        <div class="header-output" id="result-container">
+            <h2 id="full-header"></h2>
+        </div>
+
+        <div class="dashboard">
+            <div class="panel">
+                <div class="panel-title">
+                    <i data-lucide="filter"></i> Filtros
+                </div>
+
+                <div class="select-group">
+                    <label>Organismo:</label>
+                    <select id="organismo-select">
+                        <option value="">Seleccione un organismo...</option>
+                    </select>
+                </div>
+
+                <div class="panel-title" style="margin-top: 25px;">
+                    <i data-lucide="list"></i> Escalafones
+                </div>
+                <div class="escalafon-list" id="escalafon-list">
+                    <div class="no-data">Seleccione un organismo para ver sus escalafones</div>
+                </div>
+            </div>
+
+            <div>
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-ddjj">-</div>
+                        <div class="stat-label">Total DDJJ</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-periodos">-</div>
+                        <div class="stat-label">Períodos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-estados">-</div>
+                        <div class="stat-label">Estados Distintos</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <button class="back-btn" id="back-btn">
+                        <i data-lucide="arrow-left" style="width: 14px; height: 14px; vertical-align: middle;"></i> Volver a Escalafones
+                    </button>
+                    <div id="chart"></div>
+                    <div class="legend-container" id="legend-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2026 Sistema de Gestión Laboral - Premium Dashboard
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
