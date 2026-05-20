@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Data Configuration ---
-    const organismosData = {"AITDF": {"nombre": "AGENCIA DE INNOVACION DE LA PROVINCIA DE TDF", "escalafones": [{"codigo": "CAPAC", "nombre": "AIF - CAPACITADORES", "periodos": [{"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Rechazada": 1}}], "estados_totales": {"Aprobada": 1, "Rechazada": 1}, "total_declaraciones": 2}, {"codigo": "EPU", "nombre": "AIF - EPU", "periodos": [{"periodo": "202602", "cantidad": 1, "estados": {"Iniciada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Iniciada": 1, "Error al Totalizar": 1}, "total_declaraciones": 2}, {"codigo": "FUNCIO", "nombre": "AIF - Funcionarios", "periodos": [{"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Pendiente de Configuracion": 1}, "total_declaraciones": 1}, {"codigo": "SECOS", "nombre": "AIF - SECOS", "periodos": [{"periodo": "202602", "cantidad": 1, "estados": {"Iniciada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Rechazada": 1}}], "estados_totales": {"Iniciada": 1, "Rechazada": 1}, "total_declaraciones": 2}, {"codigo": "TIC", "nombre": "AIF - TIC", "periodos": [{"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Rechazada": 1}}], "estados_totales": {"Aprobada": 1, "Rechazada": 1}, "total_declaraciones": 2}, {"codigo": "GABINE", "nombre": "AIF- GABINETE", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}]}, "AREF": {"nombre": "AGENCIA RECAUDACION FUEGUINA", "escalafones": [{"codigo": "ADSCRI", "nombre": "AREF - Adscriptos", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "EPU", "nombre": "AREF - EPU", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}, {"codigo": "POLIT", "nombre": "AREF - Planta Politica", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}, {"codigo": "SECOS", "nombre": "AREF - SECOS", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}, {"codigo": "RETVOL", "nombre": "AREF - Secos Retiro Voluntario", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}]}, "BTF": {"nombre": "BANCO DE LA PROV.DE TIERRA DEL FUEGO", "escalafones": [{"codigo": "BTF2", "nombre": "BTF - Administrativo", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "BTF4", "nombre": "BTF - Funcionario", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "BTF1", "nombre": "BTF - Maestranza", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "BTF5", "nombre": "BTF - No Categorizado", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "BTFPLA", "nombre": "BTF - Planta", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "BTF3", "nombre": "BTF - Servicio", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "BTF6", "nombre": "Retiro Volunatrio", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}]}, "CPSPTF": {"nombre": "CAJA JUBILACIONES PROV. TIERRA DEL FUEGO", "escalafones": [{"codigo": "FUNCIO", "nombre": "CPSPTF - Funcionarios", "periodos": [{"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 2}, "total_declaraciones": 2}, {"codigo": "CPSPTF", "nombre": "CPSPTF - Planta", "periodos": [{"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 2}, "total_declaraciones": 2}]}, "CPP": {"nombre": "CAJA POLICIAL S/LEY 834", "escalafones": [{"codigo": "PERCAJ", "nombre": "Personal Caja Jubilacion Policial", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "CONTOL": {"nombre": "CONCEJO TOLHUIN", "escalafones": [{"codigo": "PLANTA", "nombre": "Planta Permanente", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 4}, "total_declaraciones": 4}]}, "CONMAG": {"nombre": "CONSEJO DE LA MAGISTRATURA", "escalafones": [{"codigo": "PLANTA", "nombre": "Consejo Magistratura - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Pendiente de Aprobacion": 2, "Error al Totalizar": 1}, "total_declaraciones": 3}]}, "DPOSS": {"nombre": "DIR. PROV. DE OBRAS Y SERV.SANITARIOS", "escalafones": [{"codigo": "FUNCIO", "nombre": "DPOSS - Funcionarios", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 4}, "total_declaraciones": 4}, {"codigo": "DPOSS", "nombre": "DPOSS - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 4}, "total_declaraciones": 4}]}, "DPV": {"nombre": "DIR. PROVINCIAL DE VIALIDAD", "escalafones": [{"codigo": "FUNCIO", "nombre": "DPV - Funcionarios", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Aprobada": 3, "Pendiente de Aprobacion": 1}, "total_declaraciones": 4}, {"codigo": "DPV-PL", "nombre": "DPV - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Aprobada": 3, "Pendiente de Configuracion": 1}, "total_declaraciones": 4}]}, "DPE": {"nombre": "DIRECCION PROVINCIAL DE ENERGIA", "escalafones": [{"codigo": "DPE-ADS", "nombre": "DPE - Adscriptos", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Aprobada": 1, "Pendiente de Aprobacion": 1}, "total_declaraciones": 2}, {"codigo": "FUNCIO", "nombre": "DPE - Funcionarios", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Aprobada": 1, "Error al Totalizar": 1}, "total_declaraciones": 2}, {"codigo": "DPE-PL", "nombre": "DPE - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Aprobada": 1, "Pendiente de Configuracion": 1}, "total_declaraciones": 2}]}, "DPP": {"nombre": "DIRECCION PROVINCIAL DE PUERTOS", "escalafones": [{"codigo": "DPPFUN", "nombre": "DIRECCION PROVINCIAL DE PUERTOS - FUNCIONARIOS", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}, {"codigo": "DPPPLA", "nombre": "DIRECCION PROVINCIAL DE PUERTOS - PERSONAL DE PLANTA", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "FE": {"nombre": "FISCALIA DE ESTADO", "escalafones": [{"codigo": "FE-PLA", "nombre": "FE - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 4}, "total_declaraciones": 4}]}, "GOBTDF": {"nombre": "GOBIERNO DE LA PROVINCIA DE T.D.F.", "escalafones": [{"codigo": "EPU", "nombre": "Escalafon Profesional Universitario", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Error al Totalizar": 1, "Pendiente de Aprobacion": 1}, "total_declaraciones": 2}, {"codigo": "GOBTDF", "nombre": "GOBTDF - Funcionario", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Error al Totalizar": 1, "Pendiente de Aprobacion": 1}, "total_declaraciones": 2}, {"codigo": "PARQUE", "nombre": "GUARDAPARQUES", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 1}, "total_declaraciones": 1}, {"codigo": "PENIT", "nombre": "Penitenciarios - Personal Civil", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}, {"codigo": "POLCIV", "nombre": "Personal Civil de Policia Provincial", "periodos": [{"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Pendiente de Aprobacion": 1}, "total_declaraciones": 1}, {"codigo": "DOCENT", "nombre": "Personal Docente", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Iniciada": 1}}], "estados_totales": {"Iniciada": 1}, "total_declaraciones": 1}, {"codigo": "DOCPRI", "nombre": "Personal Docente Primario", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "DOCSEC", "nombre": "Personal Docente Secundario", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "SECOS", "nombre": "Personal de Administracion Central", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Iniciada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Iniciada": 1, "Pendiente de Aprobacion": 1}, "total_declaraciones": 2}, {"codigo": "AERO", "nombre": "Personal de Aeronautica", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 1}, "total_declaraciones": 1}, {"codigo": "SALUD", "nombre": "Personal de Salud", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Iniciada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Iniciada": 1, "Pendiente de Aprobacion": 1}, "total_declaraciones": 2}, {"codigo": "RETIRO", "nombre": "Retiro Voluntario", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "SAT", "nombre": "Sindicato Argentino de Television", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Error al Totalizar": 1}, "total_declaraciones": 1}, {"codigo": "UPMF", "nombre": "Unidad Provincial de Manejo de Fuego", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 1}, "total_declaraciones": 1}]}, "IPAUSS": {"nombre": "I.P.A.U.S.S.", "escalafones": [{"codigo": "IPAUSS", "nombre": "Instituto Provincial Autarquico Unificado de Seguridad Social", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}]}, "IPRA": {"nombre": "I.P.R.A.", "escalafones": [{"codigo": "FUNCIO", "nombre": "IPRA - Funcionarios", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 4}, "total_declaraciones": 4}, {"codigo": "IPRA-P", "nombre": "IPRA - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 4}, "total_declaraciones": 4}]}, "INFUTU": {"nombre": "IN.FUE.TUR", "escalafones": [{"codigo": "AutSup", "nombre": "Autoridades Superiores", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Error al Totalizar": 1}, "total_declaraciones": 1}, {"codigo": "Profes", "nombre": "Escalafon Profesional", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "Seco", "nombre": "Escalafon Seco", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Pendiente de Configuracion": 1}, "total_declaraciones": 1}, {"codigo": "SecoBA", "nombre": "Escalafon Seco Deleg. Bs. As.", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "Histor", "nombre": "Historicos", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "Pasant", "nombre": "Pasantes", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}]}, "IPV": {"nombre": "INSTITUTO PROV. VIVIENDA (I.P.V.)", "escalafones": [{"codigo": "FUNCIO", "nombre": "IPV - Funcionarios", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 4}, "total_declaraciones": 4}, {"codigo": "IPV-PL", "nombre": "IPV - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 4}, "total_declaraciones": 4}]}, "LABFINMUN": {"nombre": "LABORATORIO DEL FIN DEL MUNDO", "escalafones": [{"codigo": "LABTDF", "nombre": "Laboratorio del Fin del Mundo", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "LEGPRO": {"nombre": "LEGISLATURA PROVINCIAL", "escalafones": [{"codigo": "LP-FUN", "nombre": "Legislatura Provincial - Funcionario", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}, {"codigo": "LP-PLA", "nombre": "Legislatura Provincial - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "MUNRGR": {"nombre": "MUNICIPALIDAD DE RIO GRANDE", "escalafones": [{"codigo": "MUNRGC", "nombre": "Concejo Deliberante Rio Grande", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Aprobada": 3, "Pendiente de Configuracion": 1}, "total_declaraciones": 4}, {"codigo": "MUNRGR", "nombre": "Municipalidad Rio Grande", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Aprobada": 3, "Pendiente de Configuracion": 1}, "total_declaraciones": 4}, {"codigo": "MUNRGO", "nombre": "Obras Sanitarias", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Aprobada": 3, "Pendiente de Configuracion": 1}, "total_declaraciones": 4}]}, "MUNTOL": {"nombre": "MUNICIPALIDAD DE TOLHUIN", "escalafones": [{"codigo": "MUNTOL", "nombre": "Municipalidad Tolhuin", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202604", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Aprobada": 3, "Error al Totalizar": 1}, "total_declaraciones": 4}]}, "MUNUSH": {"nombre": "MUNICIPALIDAD DE USHUAIA", "escalafones": [{"codigo": "MU04", "nombre": "MUSH - Autoridades", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}], "estados_totales": {"Pendiente de Aprobacion": 2, "Error al Totalizar": 1}, "total_declaraciones": 3}, {"codigo": "MU06", "nombre": "MUSH - Casa Tierra del Fuego", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "MU05", "nombre": "MUSH - Concejo Deliberante PP", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Error al Totalizar": 2, "Pendiente de Aprobacion": 1}, "total_declaraciones": 3}, {"codigo": "MU15", "nombre": "MUSH - Concejo Deliberante PT", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Pendiente de Aprobacion": 2, "Error al Totalizar": 1}, "total_declaraciones": 3}, {"codigo": "MU07", "nombre": "MUSH - Convencionales Constituyentes", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "MU09", "nombre": "MUSH - Convenio Municipal de Empleo P", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Error al Totalizar": 2, "Pendiente de Aprobacion": 1}, "total_declaraciones": 3}, {"codigo": "MU19", "nombre": "MUSH - Convenio Municipal de Empleo T", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Error al Totalizar": 1, "Pendiente de Aprobacion": 1, "Pendiente de Configuracion": 1}, "total_declaraciones": 3}, {"codigo": "MU08", "nombre": "MUSH - Maternidad", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "MU01", "nombre": "MUSH - Planta Actual", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "MU02", "nombre": "MUSH - Planta Historica", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}, {"codigo": "MU03", "nombre": "MUSH - Planta Profesores", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Error al Totalizar": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Error al Totalizar": 1, "Pendiente de Aprobacion": 1, "Pendiente de Configuracion": 1}, "total_declaraciones": 3}, {"codigo": "MU12", "nombre": "MUSH - Regimen Especial Ley 1076 PP", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Pendiente de Configuracion": 1}}], "estados_totales": {"Pendiente de Aprobacion": 2, "Pendiente de Configuracion": 1}, "total_declaraciones": 3}, {"codigo": "MU22", "nombre": "MUSH - Regimen Especial Ley 1076 PT", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Pendiente de Aprobacion": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Error al Totalizar": 1}}], "estados_totales": {"Pendiente de Aprobacion": 2, "Error al Totalizar": 1}, "total_declaraciones": 3}, {"codigo": "MU10", "nombre": "MUSH - Sindicatura General", "periodos": [{"periodo": "Sin Período", "cantidad": 0, "estados": {"SIN PRESENTACIÓN": 1}}], "estados_totales": {"SIN PRESENTACIÓN": 1}, "total_declaraciones": 1}]}, "OSPTF": {"nombre": "OBRA SOCIAL PROV. TIERRA DEL FUEGO", "escalafones": [{"codigo": "FUNCIO", "nombre": "OSPTF - Funcionarios", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}, {"codigo": "OSPTF", "nombre": "Obra Social - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "SINMUS": {"nombre": "SINDICATURA MUN. USHUAIA", "escalafones": [{"codigo": "SINMUS", "nombre": "Sindicatura", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "STJ": {"nombre": "SUPERIOR TRIBUNAL DE JUSTICIA", "escalafones": [{"codigo": "STJ", "nombre": "Superior Tribunal de Justicia", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "TCP": {"nombre": "TRIBUNAL DE CUENTAS", "escalafones": [{"codigo": "TCPFUN", "nombre": "TCP - Funcionarios", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}, {"codigo": "TCPPLA", "nombre": "TCP - Planta", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "TCPMRG": {"nombre": "TRIBUNAL DE CUENTAS MUN. RIO GDE.", "escalafones": [{"codigo": "TCMMRG", "nombre": "Tribunal de Cuentas Rio Grande", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}, "USHINT": {"nombre": "USHUAIA INTEGRAL SOCIEDAD DE ESTADO", "escalafones": [{"codigo": "Planta", "nombre": "Ushuaia Integral", "periodos": [{"periodo": "202601", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202602", "cantidad": 1, "estados": {"Aprobada": 1}}, {"periodo": "202603", "cantidad": 1, "estados": {"Aprobada": 1}}], "estados_totales": {"Aprobada": 3}, "total_declaraciones": 3}]}};
-    
+    const organismosDataBase = {"AITDF":{"nombre":"AGENCIA DE INNOVACION DE LA PROVINCIA DE TDF","escalafones":[{"codigo":"CAPAC","nombre":"AIF - CAPACITADORES"},{"codigo":"EPU","nombre":"AIF - EPU"},{"codigo":"FUNCIO","nombre":"AIF - Funcionarios"},{"codigo":"SECOS","nombre":"AIF - SECOS"},{"codigo":"TIC","nombre":"AIF - TIC"},{"codigo":"GABINE","nombre":"AIF- GABINETE"}]},"AREF":{"nombre":"AGENCIA RECAUDACION FUEGUINA","escalafones":[{"codigo":"ADSCRI","nombre":"AREF - Adscriptos"},{"codigo":"EPU","nombre":"AREF - EPU"},{"codigo":"POLIT","nombre":"AREF - Planta Politica"},{"codigo":"SECOS","nombre":"AREF - SECOS"},{"codigo":"RETVOL","nombre":"AREF - Secos Retiro Voluntario"}]},"BTF":{"nombre":"BANCO DE LA PROV.DE TIERRA DEL FUEGO","escalafones":[{"codigo":"BTF2","nombre":"BTF - Administrativo"},{"codigo":"BTF4","nombre":"BTF - Funcionario"},{"codigo":"BTF1","nombre":"BTF - Maestranza"},{"codigo":"BTF5","nombre":"BTF - No Categorizado"},{"codigo":"BTFPLA","nombre":"BTF - Planta"},{"codigo":"BTF3","nombre":"BTF - Servicio"},{"codigo":"BTF6","nombre":"Retiro Volunatrio"}]},"CPSPTF":{"nombre":"CAJA JUBILACIONES PROV. TIERRA DEL FUEGO","escalafones":[{"codigo":"FUNCIO","nombre":"CPSPTF - Funcionarios"},{"codigo":"CPSPTF","nombre":"CPSPTF - Planta"}]},"CPP":{"nombre":"CAJA POLICIAL S/LEY 834","escalafones":[{"codigo":"PERCAJ","nombre":"Personal Caja Jubilacion Policial"}]},"CONTOL":{"nombre":"CONCEJO TOLHUIN","escalafones":[{"codigo":"PLANTA","nombre":"Planta Permanente"}]},"CONMAG":{"nombre":"CONSEJO DE LA MAGISTRATURA","escalafones":[{"codigo":"PLANTA","nombre":"Consejo Magistratura - Planta"}]},"DPOSS":{"nombre":"DIR. PROV. DE OBRAS Y SERV.SANITARIOS","escalafones":[{"codigo":"FUNCIO","nombre":"DPOSS - Funcionarios"},{"codigo":"DPOSS","nombre":"DPOSS - Planta"}]},"DPV":{"nombre":"DIR. PROVINCIAL DE VIALIDAD","escalafones":[{"codigo":"FUNCIO","nombre":"DPV - Funcionarios"},{"codigo":"DPV-PL","nombre":"DPV - Planta"}]},"DPE":{"nombre":"DIRECCION PROVINCIAL DE ENERGIA","escalafones":[{"codigo":"DPE-ADS","nombre":"DPE - Adscriptos"},{"codigo":"FUNCIO","nombre":"DPE - Funcionarios"},{"codigo":"DPE-PL","nombre":"DPE - Planta"}]},"DPP":{"nombre":"DIRECCION PROVINCIAL DE PUERTOS","escalafones":[{"codigo":"DPPFUN","nombre":"DIRECCION PROVINCIAL DE PUERTOS - FUNCIONARIOS"},{"codigo":"DPPPLA","nombre":"DIRECCION PROVINCIAL DE PUERTOS - PERSONAL DE PLANTA"}]},"FE":{"nombre":"FISCALIA DE ESTADO","escalafones":[{"codigo":"FE-PLA","nombre":"FE - Planta"}]},"GOBTDF":{"nombre":"GOBIERNO DE LA PROVINCIA DE T.D.F.","escalafones":[{"codigo":"EPU","nombre":"Escalafon Profesional Universitario"},{"codigo":"GOBTDF","nombre":"GOBTDF - Funcionario"},{"codigo":"PARQUE","nombre":"GUARDAPARQUES"},{"codigo":"PENIT","nombre":"Penitenciarios - Personal Civil"},{"codigo":"POLCIV","nombre":"Personal Civil de Policia Provincial"},{"codigo":"DOCENT","nombre":"Personal Docente"},{"codigo":"DOCPRI","nombre":"Personal Docente Primario"},{"codigo":"DOCSEC","nombre":"Personal Docente Secundario"},{"codigo":"SECOS","nombre":"Personal de Administracion Central"},{"codigo":"AERO","nombre":"Personal de Aeronautica"},{"codigo":"SALUD","nombre":"Personal de Salud"},{"codigo":"RETIRO","nombre":"Retiro Voluntario"},{"codigo":"SAT","nombre":"Sindicato Argentino de Television"},{"codigo":"UPMF","nombre":"Unidad Provincial de Manejo de Fuego"}]},"IPAUSS":{"nombre":"I.P.A.U.S.S.","escalafones":[{"codigo":"IPAUSS","nombre":"Instituto Provincial Autarquico Unificado de Seguridad Social"}]},"IPRA":{"nombre":"I.P.R.A.","escalafones":[{"codigo":"FUNCIO","nombre":"IPRA - Funcionarios"},{"codigo":"IPRA-P","nombre":"IPRA - Planta"}]},"INFUTU":{"nombre":"IN.FUE.TUR","escalafones":[{"codigo":"AutSup","nombre":"Autoridades Superiores"},{"codigo":"Profes","nombre":"Escalafon Profesional"},{"codigo":"Seco","nombre":"Escalafon Seco"},{"codigo":"SecoBA","nombre":"Escalafon Seco Deleg. Bs. As."},{"codigo":"Histor","nombre":"Historicos"},{"codigo":"Pasant","nombre":"Pasantes"}]},"IPV":{"nombre":"INSTITUTO PROV. VIVIENDA (I.P.V.)","escalafones":[{"codigo":"FUNCIO","nombre":"IPV - Funcionarios"},{"codigo":"IPV-PL","nombre":"IPV - Planta"}]},"LABFINMUN":{"nombre":"LABORATORIO DEL FIN DEL MUNDO","escalafones":[{"codigo":"LABTDF","nombre":"Laboratorio del Fin del Mundo"}]},"LEGPRO":{"nombre":"LEGISLATURA PROVINCIAL","escalafones":[{"codigo":"LP-FUN","nombre":"Legislatura Provincial - Funcionario"},{"codigo":"LP-PLA","nombre":"Legislatura Provincial - Planta"}]},"MUNRGR":{"nombre":"MUNICIPALIDAD DE RIO GRANDE","escalafones":[{"codigo":"MUNRGC","nombre":"Concejo Deliberante Rio Grande"},{"codigo":"MUNRGR","nombre":"Municipalidad Rio Grande"},{"codigo":"MUNRGO","nombre":"Obras Sanitarias"}]},"MUNTOL":{"nombre":"MUNICIPALIDAD DE TOLHUIN","escalafones":[{"codigo":"MUNTOL","nombre":"Municipalidad Tolhuin"}]},"MUNUSH":{"nombre":"MUNICIPALIDAD DE USHUAIA","escalafones":[{"codigo":"MU04","nombre":"MUSH - Autoridades"},{"codigo":"MU06","nombre":"MUSH - Casa Tierra del Fuego"},{"codigo":"MU05","nombre":"MUSH - Concejo Deliberante PP"},{"codigo":"MU15","nombre":"MUSH - Concejo Deliberante PT"},{"codigo":"MU07","nombre":"MUSH - Convencionales Constituyentes"},{"codigo":"MU09","nombre":"MUSH - Convenio Municipal de Empleo P"},{"codigo":"MU19","nombre":"MUSH - Convenio Municipal de Empleo T"},{"codigo":"MU08","nombre":"MUSH - Maternidad"},{"codigo":"MU01","nombre":"MUSH - Planta Actual"},{"codigo":"MU02","nombre":"MUSH - Planta Historica"},{"codigo":"MU03","nombre":"MUSH - Planta Profesores"},{"codigo":"MU12","nombre":"MUSH - Regimen Especial Ley 1076 PP"},{"codigo":"MU22","nombre":"MUSH - Regimen Especial Ley 1076 PT"},{"codigo":"MU10","nombre":"MUSH - Sindicatura General"}]},"OSPTF":{"nombre":"OBRA SOCIAL PROV. TIERRA DEL FUEGO","escalafones":[{"codigo":"FUNCIO","nombre":"OSPTF - Funcionarios"},{"codigo":"OSPTF","nombre":"Obra Social - Planta"}]},"SINMUS":{"nombre":"SINDICATURA MUN. USHUAIA","escalafones":[{"codigo":"SINMUS","nombre":"Sindicatura"}]},"STJ":{"nombre":"SUPERIOR TRIBUNAL DE JUSTICIA","escalafones":[{"codigo":"STJ","nombre":"Superior Tribunal de Justicia"}]},"TCP":{"nombre":"TRIBUNAL DE CUENTAS","escalafones":[{"codigo":"TCPFUN","nombre":"TCP - Funcionarios"},{"codigo":"TCPPLA","nombre":"TCP - Planta"}]},"TCPMRG":{"nombre":"TRIBUNAL DE CUENTAS MUN. RIO GDE.","escalafones":[{"codigo":"TCMMRG","nombre":"Tribunal de Cuentas Rio Grande"}]},"USHINT":{"nombre":"USHUAIA INTEGRAL SOCIEDAD DE ESTADO","escalafones":[{"codigo":"Planta","nombre":"Ushuaia Integral"}]}};
+    let organismosData = {};
+
     const coloresEstados = {
         "Aprobada": "#2ECC71", 
         "SIN PRESENTACIÓN": "#B0BEC5", 
@@ -9,13 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
         "Error al Totalizar": "#e74c3c", 
         "Pendiente de Configuracion": "#CF7023", 
         "Iniciada": "#3498db", 
-        "Rechazada": "#c0392b"
-    };
-
-    // Note: coloresPeriodos is now used as a fallback or for specific cases, 
-    // but the logic now prioritizes state colors.
-    const coloresPeriodos = {
-        "Sin Período": "#B0BEC5"
+        "Rechazada": "#c0392b",
+        "A Confirmar": "#8e44ad",
+        "Cerrada": "#34495e"
     };
 
     const months = [
@@ -36,15 +33,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const escalafonList = document.getElementById('escalafon-list');
     const backBtn = document.getElementById('back-btn');
 
+    // --- Initialize Data ---
+    function resetData() {
+        // Deep copy of the base structure
+        organismosData = JSON.parse(JSON.stringify(organismosDataBase));
+        
+        // Initialize stats
+        Object.keys(organismosData).forEach(orgKey => {
+            organismosData[orgKey].escalafones.forEach(esc => {
+                esc.total_declaraciones = 0;
+                esc.estados_totales = {};
+                esc.periodos = [];
+                // Contadores por tipo de liquidación
+                esc.mensuales_count = 0;
+                esc.sac_count = 0;
+                esc.comp_count = 0;
+            });
+        });
+    }
+
     // --- File Handling Logic ---
     uploadSection.addEventListener('click', () => fileInput.click());
 
     fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
-        if (file) processFileName(file.name);
+        if (file) processExcelFile(file);
     });
 
-    // Support drag and drop
     uploadSection.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadSection.style.borderColor = 'var(--accent-orange)';
@@ -56,32 +71,160 @@ document.addEventListener('DOMContentLoaded', () => {
 
     uploadSection.addEventListener('drop', (e) => {
         e.preventDefault();
+        uploadSection.style.borderColor = 'var(--accent-cyan)';
         const file = e.dataTransfer.files[0];
-        if (file) processFileName(file.name);
+        if (file) processExcelFile(file);
     });
 
-    function processFileName(fileName) {
-        const regex = /(.+)_(\d{8})_(\d{6})/;
-        const match = fileName.match(regex);
+    function processExcelFile(file) {
+        fullHeader.textContent = "Procesando archivo...";
+        headerOutput.style.display = 'block';
 
-        if (match) {
-            const rawTitle = match[1].replace(/_/g, ' ');
-            const dateStr = match[2];
-            const year = dateStr.substring(0, 4);
-            const month = dateStr.substring(4, 6);
-            const day = dateStr.substring(6, 8);
-            const monthName = months[parseInt(month) - 1];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                
+                const jsonRows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+                
+                processExcelData(jsonRows);
+
+                // Parse filename: NAME_YYYYMMDD_HHMMSS.ext
+                // Extract title (everything before the date segment) + month + year
+                const nameWithoutExt = file.name.replace(/\.[^.]+$/, ''); // strip extension
+                const dateMatch = nameWithoutExt.match(/^(.+?)_(\d{4})(\d{2})(\d{2})_\d{6}$/);
+                
+                let headerText;
+                if (dateMatch) {
+                    const rawTitle = dateMatch[1].replace(/_/g, ' ');
+                    const year = dateMatch[2];
+                    const month = parseInt(dateMatch[3], 10);
+                    const monthName = months[month - 1] || '';
+                    headerText = `${rawTitle} - ${monthName} de ${year}`;
+                } else {
+                    // Fallback: just show cleaned filename
+                    headerText = nameWithoutExt.replace(/_/g, ' ');
+                }
+
+                fullHeader.textContent = headerText;
+            } catch (error) {
+                console.error("Error al procesar el Excel:", error);
+                fullHeader.textContent = "Error al procesar el archivo Excel. Verifica el formato.";
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    function processExcelData(rows) {
+        resetData();
+
+        rows.forEach(row => {
+            const orgCode = row['OrganismoCodigo'] ? row['OrganismoCodigo'].toString().trim() : 'Desconocido';
+            const orgNombre = row['OrganismoNombre'] ? row['OrganismoNombre'].toString().trim() : orgCode;
+            const escCode = row['EscalafonCodigo'] ? row['EscalafonCodigo'].toString().trim() : 'Desconocido';
+            const escNombre = row['EscalafonNombre'] ? row['EscalafonNombre'].toString().trim() : escCode;
+            const periodoRaw = row['Periodo'] ? row['Periodo'].toString().trim() : 'Sin Período';
+            // Use EstadoFinal, if not available try Estado
+            let estado = 'Desconocido';
+            if (row['EstadoFinal'] && row['EstadoFinal'] !== "") {
+                estado = row['EstadoFinal'].toString().trim();
+            } else if (row['Estado'] && row['Estado'] !== "") {
+                estado = row['Estado'].toString().trim();
+            }
+
+            // Create organism if it doesn't exist in base configuration
+            if (!organismosData[orgCode]) {
+                organismosData[orgCode] = {
+                    nombre: orgNombre,
+                    escalafones: []
+                };
+            }
+
+            // Find or create escalafon
+            let esc = organismosData[orgCode].escalafones.find(e => e.codigo === escCode);
+            if (!esc) {
+                esc = {
+                    codigo: escCode,
+                    nombre: escNombre,
+                    total_declaraciones: 0,
+                    estados_totales: {},
+                    periodos: [],
+                    mensuales_count: 0,
+                    sac_count: 0,
+                    comp_count: 0
+                };
+                organismosData[orgCode].escalafones.push(esc);
+            }
+
+            // Ensure stats structure exists (for dynamically created ones or missed initialization)
+            esc.total_declaraciones = esc.total_declaraciones || 0;
+            esc.estados_totales = esc.estados_totales || {};
+            esc.periodos = esc.periodos || [];
+            esc.mensuales_count = esc.mensuales_count || 0;
+            esc.sac_count = esc.sac_count || 0;
+            esc.comp_count = esc.comp_count || 0;
+
+            // Update stats
+            esc.total_declaraciones += 1;
+
+            // Classify by TipoDeLiquidacion
+            const tipoRaw = row['TipoDeLiquidacion'] ? row['TipoDeLiquidacion'].toString().toUpperCase().trim() : '';
+            if (tipoRaw.includes('SAC')) {
+                esc.sac_count += 1;
+            } else if (tipoRaw.includes('COMPLEMENTARIA')) {
+                esc.comp_count += 1;
+            } else {
+                // Mensual / Normal / any other type
+                esc.mensuales_count += 1;
+            }
             
-            fullHeader.textContent = `${rawTitle}      ${day}-${monthName}-${year}.`;
-            headerOutput.style.display = 'block';
-        } else {
-            fullHeader.textContent = `ARCHIVO: ${fileName}`;
-            headerOutput.style.display = 'block';
+            // Update global escalafon states
+            esc.estados_totales[estado] = (esc.estados_totales[estado] || 0) + 1;
+
+            // Update period stats
+            let perObj = esc.periodos.find(p => p.periodo === periodoRaw);
+            if (!perObj) {
+                perObj = { periodo: periodoRaw, cantidad: 0, estados: {} };
+                esc.periodos.push(perObj);
+            }
+            perObj.cantidad += 1;
+            perObj.estados[estado] = (perObj.estados[estado] || 0) + 1;
+        });
+
+        // After processing, if no declarations exist, mark as "SIN PRESENTACIÓN"
+        Object.keys(organismosData).forEach(orgKey => {
+            organismosData[orgKey].escalafones.forEach(esc => {
+                if (esc.total_declaraciones === 0) {
+                    esc.estados_totales["SIN PRESENTACIÓN"] = 1;
+                    esc.periodos.push({
+                        periodo: "Sin Período",
+                        cantidad: 0,
+                        estados: { "SIN PRESENTACIÓN": 1 }
+                    });
+                }
+            });
+        });
+
+        initDashboard();
+        
+        // Refresh view if an organism is already selected
+        if (currentOrganismo && organismosData[currentOrganismo]) {
+            if (currentView === 'organismo') {
+                selectOrganismo(currentOrganismo);
+            } else if (currentView === 'escalafon' && currentEscalafon) {
+                selectEscalafon(currentEscalafon);
+            }
         }
     }
 
     // --- Dashboard Logic ---
     function initDashboard() {
+        organismoSelect.innerHTML = '<option value="">Seleccione un organismo...</option>';
+        
         const sortedKeys = Object.keys(organismosData).sort((a, b) => {
             return organismosData[a].nombre.localeCompare(organismosData[b].nombre);
         });
@@ -90,18 +233,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const option = document.createElement('option');
             option.value = key;
             option.textContent = organismosData[key].nombre;
+            // Retain selection
+            if (key === currentOrganismo) {
+                option.selected = true;
+            }
             organismoSelect.appendChild(option);
         });
 
-        organismoSelect.addEventListener('change', (e) => {
-            selectOrganismo(e.target.value);
-        });
-
-        backBtn.addEventListener('click', goBack);
+        // only add event listener once
+        if (!organismoSelect.hasAttribute('data-initialized')) {
+            organismoSelect.addEventListener('change', (e) => {
+                selectOrganismo(e.target.value);
+            });
+            backBtn.addEventListener('click', goBack);
+            organismoSelect.setAttribute('data-initialized', 'true');
+        }
+        
+        if (typeof lucide !== "undefined" && lucide.createIcons) lucide.createIcons();
     }
 
     function selectOrganismo(orgCode) {
-        if (!orgCode) return;
+        if (!orgCode) {
+            escalafonList.innerHTML = '<div class="no-data">Seleccione un organismo para ver sus escalafones</div>';
+            document.getElementById('chart').innerHTML = '';
+            document.getElementById('legend-container').innerHTML = '';
+            updateStatsEmpty();
+            currentOrganismo = null;
+            return;
+        }
 
         currentOrganismo = orgCode;
         currentView = 'organismo';
@@ -113,9 +272,26 @@ document.addEventListener('DOMContentLoaded', () => {
         org.escalafones.forEach(esc => {
             const item = document.createElement('div');
             item.className = 'escalafon-item';
+
+            // Build tipo badges: always show all 3 types, even if count is 0
+            const hasTipoData = esc.total_declaraciones > 0;
+            let badgesHtml = '';
+            if (hasTipoData) {
+                const isMensualFull = esc.mensuales_count >= 12;
+                const isSacFull = esc.sac_count >= 2;
+                const badges = [
+                    `<span class="liq-badge badge-mensual ${isMensualFull ? 'badge-full' : ''}">${esc.mensuales_count}/12 Mens.</span>`,
+                    `<span class="liq-badge badge-sac ${isSacFull ? 'badge-full' : ''}">${esc.sac_count}/2 SAC</span>`,
+                    `<span class="liq-badge badge-comp">Comp: ${esc.comp_count}</span>`
+                ];
+                badgesHtml = `<div class="escalafon-badges">${badges.join('')}</div>`;
+            } else {
+                badgesHtml = `<div class="escalafon-count">${esc.total_declaraciones} declaraciones</div>`;
+            }
+
             item.innerHTML = `
                 <div class="escalafon-name">${esc.nombre}</div>
-                <div class="escalafon-count">${esc.total_declaraciones} declaraciones</div>
+                ${badgesHtml}
             `;
             item.onclick = () => selectEscalafon(esc.codigo);
             escalafonList.appendChild(item);
@@ -135,7 +311,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const labels = Object.keys(estadosTotales);
         const values = Object.values(estadosTotales);
-        const colors = labels.map(e => coloresEstados[e] || '#999');
+        
+        if (labels.length === 0) {
+            document.getElementById('chart').innerHTML = '<div class="no-data">No hay datos para mostrar</div>';
+            document.getElementById('legend-container').innerHTML = '';
+            return;
+        }
+
+        const colors = labels.map(e => coloresEstados[e] || getRandomColor(e));
 
         const data = [{
             values: values,
@@ -167,11 +350,16 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             margin: { t: 80, b: 80, l: 40, r: 40 },
             paper_bgcolor: 'rgba(0,0,0,0)',
-            plot_bgcolor: 'rgba(0,0,0,0)'
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            // White text on hover tooltip for contrast
+            hoverlabel: {
+                font: { color: '#FFFFFF', size: 13 },
+                bordercolor: 'rgba(255,255,255,0.2)'
+            }
         };
 
         Plotly.newPlot('chart', data, layout, {responsive: true});
-        updateLegend(labels, colors);
+        updateLegend(labels, colors, 'organismo');
     }
 
     function selectEscalafon(escCode) {
@@ -199,22 +387,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function showEscalafonChart(esc) {
         const periodos = esc.periodos;
 
-        if (periodos.length === 0) {
+        if (!periodos || periodos.length === 0) {
             document.getElementById('chart').innerHTML = `
                 <div class="no-data">
                     <h3>${esc.nombre}</h3>
                     <p>No hay declaraciones presentadas</p>
                 </div>`;
+            document.getElementById('legend-container').innerHTML = '';
             return;
         }
 
         const labels = periodos.map(p => {
             if (p.periodo === "Sin Período") return p.periodo;
-            const year = p.periodo.substring(0, 4);
-            const month = p.periodo.substring(4, 6);
-            const monthName = months[parseInt(month) - 1];
-            return `${monthName}-${year}`;
+            // Assuming period is YYYYMM
+            let str = p.periodo.toString();
+            if (str.length === 6) {
+                const year = str.substring(0, 4);
+                const month = str.substring(4, 6);
+                const monthName = months[parseInt(month) - 1] || month;
+                return `${monthName}-${year}`;
+            }
+            return str;
         });
+
         // Use the sum of states instead of p.cantidad to ensure periods with 0 quantity (but valid states) are shown
         const values = periodos.map(p => {
             const sum = Object.values(p.estados).reduce((a, b) => a + b, 0);
@@ -227,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Get the first state available (usually there's only one per period/escalafon)
             const state = Object.keys(p.estados)[0];
-            return coloresEstados[state] || '#999';
+            return coloresEstados[state] || getRandomColor(state);
         });
 
         const customTexts = periodos.map(p => {
@@ -266,6 +461,11 @@ document.addEventListener('DOMContentLoaded', () => {
             margin: { t: 80, b: 100, l: 40, r: 40 },
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: 'rgba(0,0,0,0)',
+            // White text on hover tooltip for contrast
+            hoverlabel: {
+                font: { color: '#FFFFFF', size: 13 },
+                bordercolor: 'rgba(255,255,255,0.2)'
+            },
             annotations: [{
                 text: `${esc.total_declaraciones}<br>DDJJ`,
                 x: 0.5,
@@ -276,7 +476,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         Plotly.newPlot('chart', data, layout, {responsive: true});
-        updateLegend(labels, colors);
+        // Pass escalafon states so the legend shows semantic colors
+        updateLegend(labels, colors, 'escalafon', esc.estados_totales);
     }
 
     function goBack() {
@@ -285,9 +486,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateLegend(labels, colors) {
+    // view: 'organismo' | 'escalafon'
+    // estadosTotales: only passed in escalafon view to show the semantic state legend
+    function updateLegend(labels, colors, view, estadosTotales) {
         const container = document.getElementById('legend-container');
         container.innerHTML = '';
+
+        // In escalafon view: render a semantic legend by STATE color, not by period
+        if (view === 'escalafon' && estadosTotales && Object.keys(estadosTotales).length > 0) {
+            // Title
+            const title = document.createElement('div');
+            title.style.cssText = 'width: 100%; text-align: center; font-size: 0.75rem; opacity: 0.6; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;';
+            title.textContent = 'Leyenda de Estados';
+            container.appendChild(title);
+
+            Object.entries(estadosTotales).sort((a, b) => b[1] - a[1]).forEach(([estado, cantidad]) => {
+                const stateColor = coloresEstados[estado] || getRandomColor(estado);
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                item.style.cssText = 'display: inline-flex; align-items: center; gap: 8px; margin: 4px 10px; font-size: 0.8rem;';
+                item.innerHTML = `
+                    <div style="width: 12px; height: 12px; border-radius: 50%; background: ${stateColor}; flex-shrink: 0;"></div>
+                    <span style="color: ${stateColor}; font-weight: 600;">${estado}</span>
+                    <span style="opacity: 0.6;">(${cantidad})</span>
+                `;
+                container.appendChild(item);
+            });
+            return;
+        }
+
+        // Default: show period labels with their colors
         labels.forEach((label, i) => {
             const item = document.createElement('div');
             item.className = 'legend-item';
@@ -323,5 +551,30 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total-estados').textContent = Object.keys(esc.estados_totales).length;
     }
 
+    function updateStatsEmpty() {
+        document.getElementById('total-ddjj').textContent = '-';
+        document.getElementById('total-periodos').textContent = '-';
+        document.getElementById('total-estados').textContent = '-';
+    }
+    
+    // Hash string to color for unknown states
+    function getRandomColor(str) {
+        if (!str) return '#999';
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        let color = '#';
+        for (let i = 0; i < 3; i++) {
+            let value = (hash >> (i * 8)) & 0xFF;
+            // Make colors a bit brighter for dark mode
+            value = Math.max(value, 100); 
+            color += ('00' + value.toString(16)).substr(-2);
+        }
+        return color;
+    }
+
+    // Startup
+    resetData();
     initDashboard();
 });
