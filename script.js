@@ -172,13 +172,16 @@ document.addEventListener('DOMContentLoaded', () => {
             esc.total_declaraciones += 1;
 
             // Classify by TipoDeLiquidacion
-            const tipoRaw = row['TipoDeLiquidacion'] ? row['TipoDeLiquidacion'].toString().toUpperCase().trim() : '';
-            if (tipoRaw.includes('SAC')) {
+            // Support both column name variants: 'TipoDeLiquidacion' and 'TipoLiquidacion'
+            const tipoRawValue = row['TipoDeLiquidacion'] || row['TipoLiquidacion'] || '';
+            const tipoRaw = tipoRawValue.toString().trim().toLowerCase();
+
+            if (tipoRaw === 'sac') {
                 esc.sac_count += 1;
-            } else if (tipoRaw.includes('COMPLEMENTARIA')) {
+            } else if (tipoRaw === 'complementaria') {
                 esc.comp_count += 1;
             } else {
-                // Mensual / Normal / any other type
+                // 'mensual' or any unrecognized type counts as monthly
                 esc.mensuales_count += 1;
             }
             
