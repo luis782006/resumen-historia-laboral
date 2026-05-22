@@ -15,6 +15,26 @@ document.addEventListener('DOMContentLoaded', () => {
         "Cerrada": "#34495e"
     };
 
+    const explicacionesEstados = {
+        "Aprobada": "DDJJ que está validada y aprobada por Acreencias cumpliendo con todos los aportes y contribuciones informados en Balance y en DDJJ.",
+        "Pendiente de Aprobacion": "DDJJ que está validada en su formato pero aún no ha sido verificada por el departamento de Acreencias para corroborar los montos informados en la DDJJ.",
+        "Pendiente de Configuracion": "DDJJ que está validada en su formato pero corresponde que sus conceptos sean configurados en el sistema. Esto involucra a ambas partes: Organismo y Caja Previsional.",
+        "Error al Totalizar": "DDJJ que está validada pero debido a una configuración errónea de la naturaleza de los conceptos no puede ser aprobada hasta tanto no se regularice el estado de los mismos.",
+        "Rechazada": "DDJJ que fue rechazada por no tener la correcta configuración de conceptos o por error: los valores informados en la DDJJ no coinciden con el Balance a pesar de una correcta configuración de conceptos.",
+        "Iniciada": "DDJJ que ingresó al sistema y por motivos externos no quedó en el mismo (ej. cortes de conexión, manipulación errónea del sistema).",
+        "SIN PRESENTACIÓN": "El organismo no ha presentado la declaración jurada para el período correspondiente.",
+        "A Confirmar": "DDJJ en proceso de confirmación de datos por parte del sistema.",
+        "Cerrada": "DDJJ cerrada para el período correspondiente."
+    };
+
+    function obtenerExplicacion(estado) {
+        const estNorm = estado ? estado.toString().trim() : '';
+        if (estNorm === "Rechaza" || estNorm === "Rechazada") return explicacionesEstados["Rechazada"];
+        if (estNorm === "Pendiente a Aprobacion" || estNorm === "Pendiente de Aprobacion") return explicacionesEstados["Pendiente de Aprobacion"];
+        if (estNorm === "Pendiente a Configuracion" || estNorm === "Pendiente de Configuracion") return explicacionesEstados["Pendiente de Configuracion"];
+        return explicacionesEstados[estNorm] || "Sin explicación disponible para este estado.";
+    }
+
     const months = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -332,12 +352,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 colors: colors,
                 line: { color: '#32333D', width: 2 }
             },
-            textinfo: 'label+percent',
+            textinfo: 'label+value',
             textposition: 'outside',
             automargin: true,
             insidetextfont: { color: '#FFFFFF' },
             outsidetextfont: { color: '#FFFFFF' },
-            hovertemplate: '<b>%{label}</b><br>Cantidad: %{value}<br>Porcentaje: %{percent}<extra></extra>'
+            hovertemplate: '<b>%{label}</b><br>Cantidad: %{value}<extra></extra>'
         }];
 
         const layout = {
@@ -441,13 +461,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 colors: colors,
                 line: { color: '#32333D', width: 2 }
             },
-            textinfo: 'label+percent+value',
+            textinfo: 'label+value',
             textposition: 'outside',
             automargin: true,
             insidetextfont: { color: '#FFFFFF' },
             outsidetextfont: { color: '#FFFFFF' },
             customdata: customTexts,
-            hovertemplate: '<b>Período: %{label}</b><br>Total DDJJ: %{value}<br>%{percent}<br><br><b>Estados:</b><br>%{customdata}<extra></extra>'
+            hovertemplate: '<b>Período: %{label}</b><br>Total DDJJ: %{value}<br><br><b>Estados:</b><br>%{customdata}<extra></extra>'
         }];
 
         const layout = {
@@ -495,23 +515,55 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('legend-container');
         container.innerHTML = '';
 
-        // In escalafon view: render a semantic legend by STATE color, not by period
+        // Restablecer estilos base responsivos del contenedor
+        container.style.flexDirection = 'row';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
+        container.style.gap = '15px';
+
+        // In escalafon view: render a semantic legend by STATE color, not by period, with detailed explanation cards
         if (view === 'escalafon' && estadosTotales && Object.keys(estadosTotales).length > 0) {
+            container.style.flexDirection = 'column';
+            container.style.alignItems = 'stretch';
+            container.style.gap = '12px';
+
             // Title
             const title = document.createElement('div');
-            title.style.cssText = 'width: 100%; text-align: center; font-size: 0.75rem; opacity: 0.6; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;';
-            title.textContent = 'Leyenda de Estados';
+            title.style.cssText = 'width: 100%; text-align: center; font-size: 0.85rem; font-weight: 700; opacity: 0.7; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; color: var(--text-white);';
+            title.textContent = 'Guía y Explicación de Estados';
             container.appendChild(title);
 
             Object.entries(estadosTotales).sort((a, b) => b[1] - a[1]).forEach(([estado, cantidad]) => {
                 const stateColor = coloresEstados[estado] || getRandomColor(estado);
+                const explicacion = obtenerExplicacion(estado);
+                
                 const item = document.createElement('div');
                 item.className = 'legend-item';
-                item.style.cssText = 'display: inline-flex; align-items: center; gap: 8px; margin: 4px 10px; font-size: 0.8rem;';
+                item.style.cssText = 'display: flex; flex-direction: column; gap: 6px; padding: 14px; background: rgba(255, 255, 255, 0.01); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.03); transition: all 0.2s ease;';
+                
+                // Dynamic Hover Interaction
+                item.onmouseenter = () => {
+                    item.style.background = 'rgba(255, 255, 255, 0.03)';
+                    item.style.borderColor = 'rgba(255, 255, 255, 0.07)';
+                    item.style.transform = 'translateY(-1px)';
+                };
+                item.onmouseleave = () => {
+                    item.style.background = 'rgba(255, 255, 255, 0.01)';
+                    item.style.borderColor = 'rgba(255, 255, 255, 0.03)';
+                    item.style.transform = 'translateY(0)';
+                };
+
                 item.innerHTML = `
-                    <div style="width: 12px; height: 12px; border-radius: 50%; background: ${stateColor}; flex-shrink: 0;"></div>
-                    <span style="color: ${stateColor}; font-weight: 600;">${estado}</span>
-                    <span style="opacity: 0.6;">(${cantidad})</span>
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background: ${stateColor}; flex-shrink: 0; box-shadow: 0 0 8px ${stateColor}80;"></div>
+                            <span style="color: var(--text-white); font-weight: 600; font-size: 0.9rem;">${estado}</span>
+                        </div>
+                        <span style="font-size: 0.8rem; background: rgba(255, 255, 255, 0.05); padding: 2px 10px; border-radius: 12px; opacity: 0.8; font-weight: 600; color: var(--accent-cyan);">Total: ${cantidad}</span>
+                    </div>
+                    <div style="font-size: 0.8rem; opacity: 0.7; padding-left: 22px; line-height: 1.45; color: var(--text-main); text-align: left;">
+                        ${explicacion}
+                    </div>
                 `;
                 container.appendChild(item);
             });
