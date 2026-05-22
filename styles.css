@@ -355,3 +355,640 @@ select:focus {
     opacity: 0.5;
     text-align: center;
 }
+
+/* --- Report Generator Elements --- */
+.header-flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.btn-report {
+    background: linear-gradient(135deg, var(--accent-cyan), #1e788e);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(44, 162, 191, 0.25);
+}
+
+.btn-report:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 20px rgba(44, 162, 191, 0.4);
+    filter: brightness(1.08);
+}
+
+/* Modal Glassmorphism Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(18, 18, 22, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--glass-border);
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 750px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: var(--text-main);
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    color: var(--text-white);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.close-modal {
+    color: var(--text-main);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: var(--text-white);
+}
+
+.modal-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 15px;
+}
+
+/* Search Box within Modal */
+.search-box-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.search-box-container input {
+    width: 100%;
+    background: var(--bg-main);
+    color: var(--text-white);
+    border: 1px solid var(--glass-border);
+    padding: 10px 15px 10px 40px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.search-box-container input:focus {
+    border-color: var(--accent-cyan);
+    outline: none;
+    box-shadow: 0 0 10px rgba(44, 162, 191, 0.15);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    opacity: 0.5;
+}
+
+/* Tree Checkboxes hierarchy styling */
+.selection-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-secondary-compact {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border: 1px solid var(--glass-border);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary-compact:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-white);
+}
+
+.report-hierarchy-tree {
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--bg-main);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+/* Node styles */
+.report-org-node {
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding-bottom: 12px;
+}
+
+.report-org-node:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.report-node-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.report-node-children {
+    padding-left: 26px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.report-esc-node {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.report-esc-node:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.report-hierarchy-tree label {
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+}
+
+.report-org-label {
+    color: var(--text-white);
+    font-size: 0.95rem;
+    font-weight: 600 !important;
+}
+
+.report-hierarchy-tree input[type="checkbox"] {
+    accent-color: var(--accent-cyan);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+/* Report Custom Options styling */
+.report-options-section {
+    border-top: 1px solid var(--glass-border);
+    padding-top: 15px;
+    margin-bottom: 20px;
+}
+
+.report-options-section h3 {
+    font-size: 1rem;
+    color: var(--text-white);
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+}
+
+.option-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    transition: all 0.2s;
+}
+
+.option-checkbox:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--glass-border);
+}
+
+.option-checkbox input[type="checkbox"] {
+    accent-color: var(--accent-cyan);
+}
+
+/* Modal Footer Buttons */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 15px;
+}
+
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border: 1px solid var(--glass-border);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border-color: rgba(231, 76, 60, 0.2);
+}
+
+.btn-generate {
+    background: linear-gradient(135deg, var(--accent-orange), #b85f1c);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(207, 112, 35, 0.25);
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-generate:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(207, 112, 35, 0.4);
+    filter: brightness(1.08);
+}
+
+/* --- PRINT REPORT STRUCTURAL STYLES (SCREEN PREVIEW / NOT PRINTED DESIGN) --- */
+#report-print-area {
+    display: none; /* Oculto completamente en pantalla en el navegador normal */
+}
+
+/* --- PRINT SPECIFIC DIRECTIVES & HIGHLIGHTS --- */
+@media print {
+    /* Hide ALL interactive application components */
+    body {
+        background: #FFFFFF !important;
+        color: #1A1A24 !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        min-height: auto !important;
+    }
+
+    .container, 
+    .upload-section, 
+    .header-output, 
+    .dashboard, 
+    .footer, 
+    .modal,
+    #report-selector-modal,
+    .back-btn {
+        display: none !important;
+    }
+
+    /* Force the dedicated print container to be visible and occupy 100% space */
+    #report-print-area {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Printing layouts */
+    .print-report-container {
+        padding: 40px !important;
+        background: #FFFFFF !important;
+        color: #1A1A24 !important;
+    }
+
+    /* Executive Title Page / Header */
+    .print-header {
+        text-align: center;
+        border-bottom: 3px double #1e788e;
+        padding-bottom: 20px;
+        margin-bottom: 35px;
+    }
+
+    .print-header h1 {
+        font-size: 2.2rem !important;
+        font-weight: 800 !important;
+        color: #1e788e !important;
+        margin-bottom: 8px !important;
+        text-transform: uppercase !important;
+        letter-spacing: -0.5px !important;
+        text-shadow: none !important;
+    }
+
+    .print-header-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: #555566;
+        font-weight: 500;
+        margin-top: 10px;
+    }
+
+    /* Hierarchy Layout */
+    .print-org-block {
+        margin-bottom: 40px;
+        page-break-after: auto; /* Allow automatic flow */
+    }
+
+    .print-org-header {
+        border-bottom: 2px solid #333;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .print-org-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #111;
+        margin: 0;
+        text-transform: uppercase;
+    }
+
+    .print-org-meta {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #555;
+        background: #EAEAEA;
+        padding: 3px 10px;
+        border-radius: 12px;
+    }
+
+    .print-org-chart-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 15px 0 30px 0;
+        background: #FAFAFA;
+        border: 1px solid #EAEAEA;
+        border-radius: 12px;
+        padding: 15px;
+    }
+
+    /* Escalafon layout block */
+    .print-esc-block {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #FAFAFA;
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+    }
+
+    .print-esc-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #E5E7EB;
+        padding-bottom: 6px;
+    }
+
+    .print-esc-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #222;
+        margin: 0;
+    }
+
+    .print-esc-badges {
+        display: flex;
+        gap: 6px;
+    }
+
+    .print-badge {
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border: 1px solid #CCC;
+    }
+
+    .print-badge.badge-mensual {
+        background: #EBF5FB;
+        border-color: #AED6F1;
+        color: #2E86C1;
+    }
+
+    .print-badge.badge-sac {
+        background: #F5EEF8;
+        border-color: #D7BDE2;
+        color: #7D3C98;
+    }
+
+    .print-badge.badge-comp {
+        background: #FEF9E7;
+        border-color: #F9E79F;
+        color: #B7950B;
+    }
+
+    .print-badge.badge-full {
+        background: #E8F8F5;
+        border-color: #A3E4D7;
+        color: #117A65 !important;
+    }
+
+    /* Print GRID of periods (14 Cells) */
+    .print-grid-container {
+        margin-top: 15px;
+    }
+
+    .print-grid-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #555;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
+    .print-grid {
+        display: grid;
+        grid-template-columns: repeat(14, 1fr);
+        gap: 5px;
+        width: 100%;
+    }
+
+    .print-cell {
+        aspect-ratio: 1;
+        border: 1.5px solid #D5D7DA;
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2px;
+        background: #FFFFFF;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .print-cell-label {
+        font-size: 0.62rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.2px;
+    }
+
+    .print-cell-status {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid rgba(0,0,0,0.15);
+    }
+
+    /* Empty cell representing non-presented (dashed) */
+    .print-cell-empty {
+        border-style: dashed !important;
+        border-color: #BAC0C5 !important;
+        background: #F3F4F6 !important;
+    }
+
+    .print-cell-empty .print-cell-label {
+        color: #777;
+    }
+
+    .print-cell-empty .print-cell-status {
+        background: #BAC0C5 !important;
+    }
+
+    /* Print Legend of Explanations */
+    .print-legend {
+        margin-top: 40px;
+        border-top: 2px solid #333;
+        padding-top: 20px;
+    }
+
+    .print-legend-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #111;
+        margin-bottom: 15px;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+
+    .print-legend-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .print-legend-item {
+        padding: 10px 12px;
+        background: #F9FAFB;
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .print-legend-item-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .print-legend-circle {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        border: 1px solid rgba(0,0,0,0.15);
+    }
+
+    .print-legend-name {
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #111;
+    }
+
+    .print-legend-desc {
+        font-size: 0.78rem;
+        line-height: 1.4;
+        color: #4B5563;
+        padding-left: 19px;
+    }
+
+    /* Smart Page-Break Mechanics */
+    .report-page-break {
+        page-break-before: always;
+        break-before: page;
+    }
+
+    .report-block-avoid {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+}

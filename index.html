@@ -28,7 +28,13 @@
         </div>
 
         <div class="header-output" id="result-container">
-            <h2 id="full-header"></h2>
+            <div class="header-flex-container">
+                <h2 id="full-header"></h2>
+                <button class="btn-report" id="btn-open-report-selector">
+                    <i data-lucide="file-text" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;"></i>
+                    Generar Reporte PDF
+                </button>
+            </div>
         </div>
 
         <div class="dashboard">
@@ -82,6 +88,62 @@
     <div class="footer">
         &copy; 2026 Sistema de Gestión Laboral - Premium Dashboard
     </div>
+
+    <!-- Modal Selector de Reporte a Medida -->
+    <div id="report-selector-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i data-lucide="settings" style="vertical-align: middle; margin-right: 8px; color: var(--accent-cyan);"></i>Configurar Reporte a Medida</h2>
+                <span class="close-modal" id="close-report-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p class="modal-subtitle">Selecciona los organismos y escalafones que deseas incluir en el documento PDF final:</p>
+                
+                <div class="search-box-container">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="report-search" placeholder="Buscar organismo o escalafón...">
+                </div>
+
+                <div class="selection-actions">
+                    <button class="btn-secondary-compact" id="btn-select-all">Seleccionar Todos</button>
+                    <button class="btn-secondary-compact" id="btn-deselect-all">Deseccionar Todos</button>
+                </div>
+
+                <!-- Lista jerárquica de organismos y escalafones -->
+                <div class="report-hierarchy-tree" id="report-hierarchy-tree">
+                    <!-- Se cargará dinámicamente con JS -->
+                </div>
+
+                <div class="report-options-section">
+                    <h3>Opciones del Reporte</h3>
+                    <div class="options-grid">
+                        <label class="option-checkbox">
+                            <input type="checkbox" id="opt-include-charts" checked>
+                            <span>Incluir Gráficos Circulares de Estado</span>
+                        </label>
+                        <label class="option-checkbox">
+                            <input type="checkbox" id="opt-include-grid" checked>
+                            <span>Incluir Rejilla de Cumplimiento Anual</span>
+                        </label>
+                        <label class="option-checkbox">
+                            <input type="checkbox" id="opt-include-explanations" checked>
+                            <span>Incluir Leyenda con Explicación de Estados</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel-report">Cancelar</button>
+                <button class="btn-generate" id="btn-generate-pdf">
+                    <i data-lucide="printer" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;"></i>
+                    Generar e Imprimir PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Área de Impresión Dedicada (oculta en pantalla, visible en @media print) -->
+    <div id="report-print-area"></div>
 
     <script src="script.js"></script>
     <script>

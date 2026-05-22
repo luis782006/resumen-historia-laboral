@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 esc.mensuales_count = 0;
                 esc.sac_count = 0;
                 esc.comp_count = 0;
+                esc.sac_details = [];
             });
         });
     }
@@ -196,8 +197,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const tipoRawValue = row['TipoDeLiquidacion'] || row['TipoLiquidacion'] || '';
             const tipoRaw = tipoRawValue.toString().trim().toLowerCase();
 
+            esc.sac_details = esc.sac_details || [];
+
             if (tipoRaw === 'sac') {
                 esc.sac_count += 1;
+                esc.sac_details.push({ periodo: periodoRaw, estado: estado });
             } else if (tipoRaw === 'complementaria') {
                 esc.comp_count += 1;
             } else {
@@ -629,7 +633,521 @@ document.addEventListener('DOMContentLoaded', () => {
         return color;
     }
 
+    // --- Lógica del Generador de Reportes PDF Personalizados ---
+    function initReportGenerator() {
+        const modal = document.getElementById('report-selector-modal');
+        const btnOpenSelector = document.getElementById('btn-open-report-selector');
+        const btnCloseSelector = document.getElementById('close-report-modal');
+        const btnCancel = document.getElementById('btn-cancel-report');
+        const btnGenerate = document.getElementById('btn-generate-pdf');
+        const hierarchyTree = document.getElementById('report-hierarchy-tree');
+        const searchInput = document.getElementById('report-search');
+        const btnSelectAll = document.getElementById('btn-select-all');
+        const btnDeselectAll = document.getElementById('btn-deselect-all');
+        const printArea = document.getElementById('report-print-area');
+
+        if (!btnOpenSelector) return;
+
+        // Abrir Modal
+        btnOpenSelector.addEventListener('click', () => {
+            modal.style.display = 'block';
+            buildReportHierarchyTree();
+            if (typeof lucide !== "undefined" && lucide.createIcons) lucide.createIcons();
+        });
+
+        // Cerrar Modal
+        const closeModalFn = () => {
+            modal.style.display = 'none';
+            searchInput.value = '';
+        };
+        btnCloseSelector.addEventListener('click', closeModalFn);
+        btnCancel.addEventListener('click', closeModalFn);
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) closeModalFn();
+        });
+
+        // Botones de Selección Rápida
+        btnSelectAll.addEventListener('click', () => {
+            const checkboxes = hierarchyTree.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = true);
+        });
+
+        btnDeselectAll.addEventListener('click', () => {
+            const checkboxes = hierarchyTree.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+        });
+
+        // Buscador Dinámico de Nodos
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const orgNodes = hierarchyTree.querySelectorAll('.report-org-node');
+
+            orgNodes.forEach(orgNode => {
+                const orgLabel = orgNode.querySelector('.report-org-label').textContent.toLowerCase();
+                const children = orgNode.querySelectorAll('.report-esc-node');
+                let matchCount = 0;
+
+                children.forEach(child => {
+                    const escLabel = child.textContent.toLowerCase();
+                    if (escLabel.includes(query) || orgLabel.includes(query)) {
+                        child.style.display = 'flex';
+                        matchCount++;
+                    } else {
+                        child.style.display = 'none';
+                    }
+                });
+
+                if (orgLabel.includes(query) || matchCount > 0) {
+                    orgNode.style.display = 'block';
+                } else {
+                    orgNode.style.display = 'none';
+                }
+            });
+        });
+
+        // Construir Árbol de Selección en base a organismosData
+        function buildReportHierarchyTree() {
+            hierarchyTree.innerHTML = '';
+
+            // Filtrar solo los organismos que tienen declaraciones reales del Excel
+            const orgKeys = Object.keys(organismosData).filter(key => {
+                const org = organismosData[key];
+                return org.escalafones.some(esc => esc.total_declaraciones > 0);
+            }).sort((a, b) => organismosData[a].nombre.localeCompare(organismosData[b].nombre));
+
+            if (orgKeys.length === 0) {
+                hierarchyTree.innerHTML = '<div class="no-data" style="padding: 20px;">Carga un archivo Excel de Historia Laboral primero para habilitar el reporte.</div>';
+                return;
+            }
+
+            orgKeys.forEach(orgKey => {
+                const org = organismosData[orgKey];
+                
+                const orgNode = document.createElement('div');
+                orgNode.className = 'report-org-node';
+                orgNode.setAttribute('data-org-code', orgKey);
+
+                // Solo incluir escalafones con datos cargados
+                const validEscalafones = org.escalafones.filter(esc => esc.total_declaraciones > 0)
+                    .sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+                if (validEscalafones.length === 0) return;
+
+                // Crear Cabecera del Organismo
+                const header = document.createElement('div');
+                header.className = 'report-node-header';
+                
+                const orgCheckbox = document.createElement('input');
+                orgCheckbox.type = 'checkbox';
+                orgCheckbox.id = `org-cb-${orgKey}`;
+                orgCheckbox.checked = true;
+                orgCheckbox.setAttribute('data-org-cb', orgKey);
+
+                const orgLabel = document.createElement('label');
+                orgLabel.className = 'report-org-label';
+                orgLabel.htmlFor = `org-cb-${orgKey}`;
+                orgLabel.textContent = org.nombre;
+
+                header.appendChild(orgCheckbox);
+                header.appendChild(orgLabel);
+                orgNode.appendChild(header);
+
+                // Crear Hijos (Escalafones)
+                const childrenContainer = document.createElement('div');
+                childrenContainer.className = 'report-node-children';
+
+                validEscalafones.forEach(esc => {
+                    const escNode = document.createElement('div');
+                    escNode.className = 'report-esc-node';
+
+                    const escCheckbox = document.createElement('input');
+                    escCheckbox.type = 'checkbox';
+                    escCheckbox.id = `esc-cb-${orgKey}-${esc.codigo}`;
+                    escCheckbox.checked = true;
+                    escCheckbox.setAttribute('data-parent-org', orgKey);
+                    escCheckbox.setAttribute('data-esc-code', esc.codigo);
+
+                    const escLabel = document.createElement('label');
+                    escLabel.htmlFor = `esc-cb-${orgKey}-${esc.codigo}`;
+                    escLabel.textContent = esc.nombre;
+
+                    escNode.appendChild(escCheckbox);
+                    escNode.appendChild(escLabel);
+                    childrenContainer.appendChild(escNode);
+                });
+
+                orgNode.appendChild(childrenContainer);
+                hierarchyTree.appendChild(orgNode);
+
+                // Reactividad del Checkbox Maestro del Organismo
+                orgCheckbox.addEventListener('change', (e) => {
+                    const isChecked = e.target.checked;
+                    const childrenCheckboxes = childrenContainer.querySelectorAll('input[type="checkbox"]');
+                    childrenCheckboxes.forEach(cb => cb.checked = isChecked);
+                });
+
+                // Reactividad en los Checkboxes Hijos
+                childrenContainer.addEventListener('change', () => {
+                    const childrenCheckboxes = childrenContainer.querySelectorAll('input[type="checkbox"]');
+                    const allChecked = Array.from(childrenCheckboxes).every(cb => cb.checked);
+                    const someChecked = Array.from(childrenCheckboxes).some(cb => cb.checked);
+                    
+                    orgCheckbox.checked = allChecked;
+                    orgCheckbox.indeterminate = someChecked && !allChecked;
+                });
+            });
+        }
+
+        // Generar e Imprimir Reporte PDF
+        btnGenerate.addEventListener('click', () => {
+            const selectedOrgs = [];
+            const orgNodes = hierarchyTree.querySelectorAll('.report-org-node');
+
+            orgNodes.forEach(orgNode => {
+                const orgKey = orgNode.getAttribute('data-org-code');
+                const orgCheckbox = orgNode.querySelector(`input[id="org-cb-${orgKey}"]`);
+                
+                const escCheckboxes = orgNode.querySelectorAll('.report-node-children input[type="checkbox"]:checked');
+                
+                if (escCheckboxes.length > 0) {
+                    const selectedEscCodes = Array.from(escCheckboxes).map(cb => cb.getAttribute('data-esc-code'));
+                    selectedOrgs.push({
+                        codigo: orgKey,
+                        nombre: organismosData[orgKey].nombre,
+                        escalafonesCodes: selectedEscCodes
+                    });
+                }
+            });
+
+            if (selectedOrgs.length === 0) {
+                alert("Por favor, selecciona al menos un organismo y un escalafón para incluir en el reporte.");
+                return;
+            }
+
+            // Ocultar modal selector
+            closeModalFn();
+
+            // Configurar e Inyectar Reporte de Impresión
+            compileReportHTML(selectedOrgs);
+        });
+
+        // Mapear y compilar la estructura de impresión
+        function compileReportHTML(selectedData) {
+            printArea.innerHTML = '';
+
+            const incCharts = document.getElementById('opt-include-charts').checked;
+            const incGrid = document.getElementById('opt-include-grid').checked;
+            const incExplanations = document.getElementById('opt-include-explanations').checked;
+
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            
+            const fileHeaderElement = document.getElementById('full-header');
+            const fileTitle = fileHeaderElement ? fileHeaderElement.textContent : "Historial Laboral - Resumen";
+
+            // 1. Contenedor del Reporte de Auditoría
+            const reportContainer = document.createElement('div');
+            reportContainer.className = 'print-report-container';
+
+            // 2. Portada del Reporte / Encabezado Ejecutivo
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'print-header';
+            headerDiv.innerHTML = `
+                <h1>Informe de Auditoría de Historia Laboral</h1>
+                <div style="font-size: 1.15rem; font-weight: 600; color: #1e788e; margin-top: 5px;">${fileTitle}</div>
+                <div class="print-header-meta">
+                    <span>Generado por: Caja de Jubilaciones TDF</span>
+                    <span>Fecha: ${formattedDate}</span>
+                </div>
+            `;
+            reportContainer.appendChild(headerDiv);
+
+            // 3. Procesar y Renderizar cada Organismo seleccionado
+            const chartCreationQueue = [];
+
+            selectedData.forEach((orgData, index) => {
+                const orgObj = organismosData[orgData.codigo];
+                const orgBlock = document.createElement('div');
+                orgBlock.className = 'print-org-block';
+                
+                // Si no es el primer organismo, forzar salto de página anterior para separar ordenadamente
+                if (index > 0) {
+                    orgBlock.className += ' report-page-break';
+                }
+
+                // Calcular datos agregados del organismo
+                let orgTotalDeclaraciones = 0;
+                const orgEstados = {};
+                orgData.escalafonesCodes.forEach(escCode => {
+                    const esc = orgObj.escalafones.find(e => e.codigo === escCode);
+                    if (esc) {
+                        orgTotalDeclaraciones += esc.total_declaraciones;
+                        Object.entries(esc.estados_totales).forEach(([est, cant]) => {
+                            orgEstados[est] = (orgEstados[est] || 0) + cant;
+                        });
+                    }
+                });
+
+                // Cabecera del Organismo
+                const orgHeader = document.createElement('div');
+                orgHeader.className = 'print-org-header';
+                orgHeader.innerHTML = `
+                    <h2 class="print-org-title">${orgObj.nombre}</h2>
+                    <span class="print-org-meta">${orgData.escalafonesCodes.length} Escalafones · ${orgTotalDeclaraciones} DDJJ</span>
+                `;
+                orgBlock.appendChild(orgHeader);
+
+                // Gráfico circular del Organismo (si se selecciona)
+                if (incCharts && orgTotalDeclaraciones > 0) {
+                    const chartWrapper = document.createElement('div');
+                    chartWrapper.className = 'print-org-chart-wrapper report-block-avoid';
+                    
+                    const chartId = `print-chart-org-${orgData.codigo}`;
+                    const chartDiv = document.createElement('div');
+                    chartDiv.id = chartId;
+                    chartDiv.style.cssText = 'width: 100%; max-width: 500px; height: 260px; margin: 0 auto;';
+                    
+                    chartWrapper.appendChild(chartDiv);
+                    orgBlock.appendChild(chartWrapper);
+
+                    // Agregar a la cola de dibujo de gráficos
+                    chartCreationQueue.push({
+                        id: chartId,
+                        labels: Object.keys(orgEstados),
+                        values: Object.values(orgEstados),
+                        title: orgObj.nombre
+                    });
+                }
+
+                // Renderizar cada Escalafón del organismo
+                orgData.escalafonesCodes.forEach(escCode => {
+                    const esc = orgObj.escalafones.find(e => e.codigo === escCode);
+                    if (!esc) return;
+
+                    const escBlock = document.createElement('div');
+                    escBlock.className = 'print-esc-block report-block-avoid';
+
+                    // Clasificación de cumplimiento de DDJJ
+                    const isMensualFull = esc.mensuales_count >= 12;
+                    const isSacFull = esc.sac_count >= 2;
+
+                    const badgesHtml = `
+                        <div class="print-esc-badges">
+                            <span class="print-badge badge-mensual ${isMensualFull ? 'badge-full' : ''}">${esc.mensuales_count}/12 Mens.</span>
+                            <span class="print-badge badge-sac ${isSacFull ? 'badge-full' : ''}">${esc.sac_count}/2 SAC</span>
+                            <span class="print-badge badge-comp">Comp: ${esc.comp_count}</span>
+                        </div>
+                    `;
+
+                    escBlock.innerHTML = `
+                        <div class="print-esc-header">
+                            <h3 class="print-esc-title">${esc.nombre}</h3>
+                            ${badgesHtml}
+                        </div>
+                    `;
+
+                    // Matriz de Períodos de 14 Celdas (si se selecciona)
+                    if (incGrid) {
+                        const gridContainer = document.createElement('div');
+                        gridContainer.className = 'print-grid-container';
+                        
+                        // Inferir el año predominante en los periodos del escalafón
+                        let year = now.getFullYear();
+                        const yearsArray = esc.periodos
+                            .filter(p => p.periodo !== "Sin Período" && p.periodo.toString().length === 6)
+                            .map(p => p.periodo.toString().substring(0, 4));
+                        
+                        if (yearsArray.length > 0) {
+                            // Encontrar el año más común
+                            const occurrences = {};
+                            let maxOccurrences = 0;
+                            yearsArray.forEach(y => {
+                                occurrences[y] = (occurrences[y] || 0) + 1;
+                                if (occurrences[y] > maxOccurrences) {
+                                    maxOccurrences = occurrences[y];
+                                    year = y;
+                                }
+                            });
+                        }
+
+                        gridContainer.innerHTML = `
+                            <div class="print-grid-title">Matriz de Presentación Anual (Año ${year})</div>
+                        `;
+
+                        const gridDiv = document.createElement('div');
+                        gridDiv.className = 'print-grid';
+
+                        // 12 celdas de Enero a Diciembre
+                        const shortMonths = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                        
+                        for (let m = 1; m <= 12; m++) {
+                            const monthStr = m.toString().padStart(2, '0');
+                            const periodCode = `${year}${monthStr}`;
+                            
+                            // Buscar declaración mensual de este mes
+                            const periodData = esc.periodos.find(p => p.periodo === periodCode);
+                            const cell = document.createElement('div');
+                            cell.className = 'print-cell';
+
+                            const label = document.createElement('span');
+                            label.className = 'print-cell-label';
+                            label.textContent = shortMonths[m - 1];
+                            cell.appendChild(label);
+
+                            const indicator = document.createElement('div');
+                            indicator.className = 'print-cell-status';
+
+                            if (periodData) {
+                                const activeState = Object.keys(periodData.estados)[0];
+                                const activeColor = coloresEstados[activeState] || getRandomColor(activeState);
+                                indicator.style.background = activeColor;
+                                cell.title = `${shortMonths[m - 1]} ${year}: ${activeState}`;
+                            } else {
+                                cell.className += ' print-cell-empty';
+                                cell.title = `${shortMonths[m - 1]} ${year}: SIN PRESENTACIÓN`;
+                            }
+
+                            cell.appendChild(indicator);
+                            gridDiv.appendChild(cell);
+                        }
+
+                        // 2 celdas para SAC (Aguinaldos)
+                        for (let s = 1; s <= 2; s++) {
+                            const cell = document.createElement('div');
+                            cell.className = 'print-cell';
+
+                            const label = document.createElement('span');
+                            label.className = 'print-cell-label';
+                            label.textContent = `SAC ${s}`;
+                            cell.appendChild(label);
+
+                            const indicator = document.createElement('div');
+                            indicator.className = 'print-cell-status';
+
+                            // Buscar registro de SAC correspondiente
+                            const sacItem = esc.sac_details[s - 1];
+
+                            if (sacItem) {
+                                const activeColor = coloresEstados[sacItem.estado] || getRandomColor(sacItem.estado);
+                                indicator.style.background = activeColor;
+                                cell.title = `SAC ${s} (${sacItem.periodo}): ${sacItem.estado}`;
+                            } else {
+                                cell.className += ' print-cell-empty';
+                                cell.title = `SAC ${s}: SIN PRESENTACIÓN`;
+                            }
+
+                            cell.appendChild(indicator);
+                            gridDiv.appendChild(cell);
+                        }
+
+                        gridContainer.appendChild(gridDiv);
+                        escBlock.appendChild(gridContainer);
+                    }
+
+                    orgBlock.appendChild(escBlock);
+                });
+
+                reportContainer.appendChild(orgBlock);
+            });
+
+            // 4. Inyectar Guía de Explicación de Estados (si se selecciona)
+            if (incExplanations) {
+                // Obtener todos los estados únicos presentes en los organismos seleccionados
+                const uniqueStates = new Set();
+                selectedData.forEach(orgData => {
+                    const orgObj = organismosData[orgData.codigo];
+                    orgData.escalafonesCodes.forEach(escCode => {
+                        const esc = orgObj.escalafones.find(e => e.codigo === escCode);
+                        if (esc) {
+                            Object.keys(esc.estados_totales).forEach(st => uniqueStates.add(st));
+                        }
+                    });
+                });
+
+                if (uniqueStates.size > 0) {
+                    const legendDiv = document.createElement('div');
+                    legendDiv.className = 'print-legend report-page-break report-block-avoid';
+                    
+                    let legendItemsHtml = '';
+                    Array.from(uniqueStates).sort().forEach(state => {
+                        const stateColor = coloresEstados[state] || getRandomColor(state);
+                        const explicacion = obtenerExplicacion(state);
+                        legendItemsHtml += `
+                            <div class="print-legend-item">
+                                <div class="print-legend-item-header">
+                                    <div class="print-legend-circle" style="background: ${stateColor};"></div>
+                                    <span class="print-legend-name">${state}</span>
+                                </div>
+                                <div class="print-legend-desc">${explicacion}</div>
+                            </div>
+                        `;
+                    });
+
+                    legendDiv.innerHTML = `
+                        <div class="print-legend-title">Guía Metodológica de Estados</div>
+                        <div class="print-legend-grid">
+                            ${legendItemsHtml}
+                        </div>
+                    `;
+                    reportContainer.appendChild(legendDiv);
+                }
+            }
+
+            printArea.appendChild(reportContainer);
+
+            // 5. Renderizar Gráficos Plotly en la cola (con colores adaptados para impresión clara)
+            if (incCharts && chartCreationQueue.length > 0) {
+                chartCreationQueue.forEach(item => {
+                    const colors = item.labels.map(lbl => coloresEstados[lbl] || getRandomColor(lbl));
+                    
+                    const data = [{
+                        values: item.values,
+                        labels: item.labels,
+                        type: 'pie',
+                        hole: 0.35,
+                        marker: {
+                            colors: colors,
+                            line: { color: '#FFFFFF', width: 1.5 }
+                        },
+                        textinfo: 'label+value',
+                        textposition: 'inside',
+                        insidetextfont: { color: '#FFFFFF', size: 9 },
+                        automargin: true,
+                        hovertemplate: '<b>%{label}</b><br>Cantidad: %{value}<extra></extra>'
+                    }];
+
+                    const layout = {
+                        title: {
+                            text: `<b>Distribución de Estados</b><br><span style="font-size: 11px; color: #555;">${item.title}</span>`,
+                            font: { color: '#111111', size: 13 }
+                        },
+                        showlegend: true,
+                        legend: {
+                            orientation: 'v',
+                            x: 0.85,
+                            y: 0.5,
+                            font: { color: '#222222', size: 9 }
+                        },
+                        margin: { t: 40, b: 20, l: 10, r: 110 },
+                        paper_bgcolor: '#FAFAFA',
+                        plot_bgcolor: '#FAFAFA',
+                        width: 480,
+                        height: 230
+                    };
+
+                    Plotly.newPlot(item.id, data, layout, {staticPlot: true});
+                });
+            }
+
+            // 6. Lanzar diálogo de impresión sincronizado
+            setTimeout(() => {
+                window.print();
+            }, 600);
+        }
+    }
+
     // Startup
     resetData();
     initDashboard();
+    initReportGenerator();
 });
