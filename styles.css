@@ -676,6 +676,201 @@ select:focus {
 }
 
 .btn-generate:hover {
+    border-color: var(--accent-cyan);
+    outline: none;
+    box-shadow: 0 0 10px rgba(44, 162, 191, 0.15);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    opacity: 0.5;
+}
+
+/* Tree Checkboxes hierarchy styling */
+.selection-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-secondary-compact {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border: 1px solid var(--glass-border);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary-compact:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-white);
+}
+
+.report-hierarchy-tree {
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--bg-main);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+/* Node styles */
+.report-org-node {
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding-bottom: 12px;
+}
+
+.report-org-node:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.report-node-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.report-node-children {
+    padding-left: 26px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.report-esc-node {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.report-esc-node:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.report-hierarchy-tree label {
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+}
+
+.report-org-label {
+    color: var(--text-white);
+    font-size: 0.95rem;
+    font-weight: 600 !important;
+}
+
+.report-hierarchy-tree input[type="checkbox"] {
+    accent-color: var(--accent-cyan);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+/* Report Custom Options styling */
+.report-options-section {
+    border-top: 1px solid var(--glass-border);
+    padding-top: 15px;
+    margin-bottom: 20px;
+}
+
+.report-options-section h3 {
+    font-size: 1rem;
+    color: var(--text-white);
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+}
+
+.option-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    transition: all 0.2s;
+}
+
+.option-checkbox:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--glass-border);
+}
+
+.option-checkbox input[type="checkbox"] {
+    accent-color: var(--accent-cyan);
+}
+
+/* Modal Footer Buttons */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 15px;
+}
+
+.btn-cancel {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border: 1px solid var(--glass-border);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border-color: rgba(231, 76, 60, 0.2);
+}
+
+.btn-generate {
+    background: linear-gradient(135deg, var(--accent-orange), #b85f1c);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(207, 112, 35, 0.25);
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-generate:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(207, 112, 35, 0.4);
     filter: brightness(1.08);
@@ -688,6 +883,11 @@ select:focus {
 
 /* --- PRINT SPECIFIC DIRECTIVES & HIGHLIGHTS --- */
 @media print {
+    @page {
+        size: A4;
+        margin: 0.6cm 0.8cm !important;
+    }
+
     /* Hide ALL interactive application components */
     body {
         background: #FFFFFF !important;
@@ -720,24 +920,24 @@ select:focus {
 
     /* Printing layouts */
     .print-report-container {
-        padding: 40px !important;
+        padding: 15px 10px !important;
         background: #FFFFFF !important;
-        color: #1A1A24 !important;
+        color: #000000 !important;
     }
 
     /* Executive Title Page / Header */
     .print-header {
         text-align: center;
-        border-bottom: 3px double #1e788e;
-        padding-bottom: 20px;
-        margin-bottom: 35px;
+        border-bottom: 2px solid #000000;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
     }
 
     .print-header h1 {
-        font-size: 2.2rem !important;
+        font-size: 1.6rem !important;
         font-weight: 800 !important;
-        color: #1e788e !important;
-        margin-bottom: 8px !important;
+        color: #000000 !important;
+        margin-bottom: 4px !important;
         text-transform: uppercase !important;
         letter-spacing: -0.5px !important;
         text-shadow: none !important;
@@ -746,41 +946,42 @@ select:focus {
     .print-header-meta {
         display: flex;
         justify-content: space-between;
-        font-size: 0.85rem;
-        color: #555566;
-        font-weight: 500;
-        margin-top: 10px;
+        font-size: 0.8rem;
+        color: #333333;
+        font-weight: 600;
+        margin-top: 5px;
     }
 
     /* Hierarchy Layout */
     .print-org-block {
-        margin-bottom: 40px;
+        margin-bottom: 20px;
         page-break-after: auto; /* Allow automatic flow */
     }
 
     .print-org-header {
-        border-bottom: 2px solid #333;
-        padding-bottom: 8px;
-        margin-bottom: 20px;
+        border-bottom: 2px solid #000000;
+        padding-bottom: 4px;
+        margin-bottom: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
 
     .print-org-title {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #111;
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #000000;
         margin: 0;
         text-transform: uppercase;
     }
 
     .print-org-meta {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #555;
-        background: #EAEAEA;
-        padding: 3px 10px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #000000;
+        background: #EAEAEA !important;
+        border: 1px solid #000000;
+        padding: 2px 10px;
         border-radius: 12px;
     }
 
@@ -788,36 +989,41 @@ select:focus {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 15px 0 30px 0;
-        background: #FAFAFA;
-        border: 1px solid #EAEAEA;
+        margin: 5px 0 10px 0;
+        background: #FFFFFF !important;
+        border: 1.5px solid #000000;
         border-radius: 12px;
-        padding: 15px;
+        padding: 6px;
+        page-break-inside: avoid;
+        break-inside: avoid;
     }
 
     /* Escalafon layout block */
     .print-esc-block {
-        margin-bottom: 30px;
-        padding: 20px;
-        background: #FAFAFA;
-        border: 1px solid #E5E7EB;
+        margin-bottom: 10px;
+        padding: 10px 15px;
+        background: #FFFFFF !important;
+        border: 1.5px solid #000000;
         border-radius: 12px;
+        page-break-inside: avoid;
+        break-inside: avoid;
     }
 
     .print-esc-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
-        border-bottom: 1px solid #E5E7EB;
-        padding-bottom: 6px;
+        margin-bottom: 8px;
+        border-bottom: 1.5px solid #000000;
+        padding-bottom: 4px;
     }
 
     .print-esc-title {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #222;
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: #000000;
         margin: 0;
+        text-transform: uppercase;
     }
 
     .print-esc-badges {
@@ -826,133 +1032,272 @@ select:focus {
     }
 
     .print-badge {
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        border: 1px solid #CCC;
+        padding: 2px 6px !important;
+        border-radius: 4px !important;
+        font-size: 0.65rem !important;
+        font-weight: 700 !important;
+        border: 1px solid #000000 !important;
+        background: #FAFAFA !important;
+        color: #000000 !important;
     }
 
     .print-badge.badge-mensual {
-        background: #EBF5FB;
-        border-color: #AED6F1;
-        color: #2E86C1;
+        background: #FFFFFF !important;
     }
 
     .print-badge.badge-sac {
-        background: #F5EEF8;
-        border-color: #D7BDE2;
-        color: #7D3C98;
+        background: #FFFFFF !important;
     }
 
     .print-badge.badge-comp {
-        background: #FEF9E7;
-        border-color: #F9E79F;
-        color: #B7950B;
+        background: #FFFFFF !important;
     }
 
     .print-badge.badge-full {
-        background: #E8F8F5;
-        border-color: #A3E4D7;
-        color: #117A65 !important;
+        background: #EAEAEA !important;
     }
 
-    /* Print GRID of periods (14 Cells) */
-    .print-grid-container {
-        margin-top: 15px;
+    /* Print GRID layout */
+    .print-matrix-section {
+        margin-bottom: 10px;
+        page-break-inside: avoid;
+        break-inside: avoid;
     }
 
     .print-grid-title {
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #555;
-        letter-spacing: 0.5px;
-        margin-bottom: 8px;
+        font-size: 0.72rem !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        color: #000000 !important;
+        letter-spacing: 0.5px !important;
+        margin-bottom: 4px !important;
+        border-left: 2px solid #000000;
+        padding-left: 6px;
     }
 
     .print-grid {
-        display: grid;
-        grid-template-columns: repeat(14, 1fr);
-        gap: 5px;
-        width: 100%;
+        display: grid !important;
+        grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+        gap: 4px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
+    .print-grid-sac {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        max-width: 320px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Print Cell Styling (Monochrome with Centered Highlighted Symbols) */
     .print-cell {
-        aspect-ratio: 1;
-        border: 1.5px solid #D5D7DA;
+        width: 100% !important;
+        min-width: 0 !important;
+        aspect-ratio: 1 !important;
+        border: 1.5px solid #000000;
         border-radius: 6px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        padding: 2px;
+        padding: 4px 1px !important;
         background: #FFFFFF;
-        box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+        box-sizing: border-box !important;
+        text-align: center;
+    }
+
+    .print-cell-sac {
+        aspect-ratio: 3.2 !important;
+        padding: 4px 6px !important;
     }
 
     .print-cell-label {
-        font-size: 0.62rem;
+        font-size: 0.58rem;
         font-weight: 700;
-        color: #333;
-        margin-bottom: 2px;
+        color: #000000;
         text-transform: uppercase;
         letter-spacing: 0.2px;
+        margin-bottom: 1px;
     }
 
-    .print-cell-status {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        border: 1px solid rgba(0,0,0,0.15);
+    .print-cell-symbol {
+        font-size: 0.95rem !important;
+        font-weight: 900;
+        color: #000000;
+        line-height: 1;
     }
 
-    /* Empty cell representing non-presented (dashed) */
-    .print-cell-empty {
-        border-style: dashed !important;
-        border-color: #BAC0C5 !important;
-        background: #F3F4F6 !important;
+    /* Strict Monochrome Classes based on Audit Status */
+    .cell-aprobada {
+        background-color: #EFEFEF !important;
+        border: 1.5px solid #000000 !important;
+        color: #000000 !important;
+    }
+    .cell-aprobada .print-cell-symbol, 
+    .cell-aprobada.print-table-symbol, 
+    .cell-aprobada.print-legend-symbol-box {
+        color: #000000 !important;
     }
 
-    .print-cell-empty .print-cell-label {
-        color: #777;
+    .cell-sin-presentacion {
+        background-color: #FFFFFF !important;
+        border: 1px dashed #777777 !important;
+        color: #777777 !important;
+    }
+    .cell-sin-presentacion .print-cell-label {
+        color: #777777 !important;
+    }
+    .cell-sin-presentacion .print-cell-symbol, 
+    .cell-sin-presentacion.print-table-symbol, 
+    .cell-sin-presentacion.print-legend-symbol-box {
+        color: #777777 !important;
     }
 
-    .print-cell-empty .print-cell-status {
-        background: #BAC0C5 !important;
+    .cell-error {
+        background-color: #FFFFFF !important;
+        border: 2.5px double #000000 !important;
+        color: #000000 !important;
+    }
+    .cell-error .print-cell-symbol, 
+    .cell-error.print-table-symbol, 
+    .cell-error.print-legend-symbol-box {
+        color: #000000 !important;
     }
 
-    /* Print Legend of Explanations */
+    .cell-rechazada {
+        background-color: #D1D1D1 !important; /* Slightly darker shade of grey for visual alert */
+        border: 2px solid #000000 !important;
+        color: #000000 !important;
+    }
+    .cell-rechazada .print-cell-symbol, 
+    .cell-rechazada.print-table-symbol, 
+    .cell-rechazada.print-legend-symbol-box {
+        color: #000000 !important;
+    }
+
+    .cell-pendiente {
+        background-color: #FFFFFF !important;
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+    }
+    .cell-pendiente .print-cell-symbol, 
+    .cell-pendiente.print-table-symbol, 
+    .cell-pendiente.print-legend-symbol-box {
+        color: #000000 !important;
+    }
+
+    /* Print COMPLEMENTARIAS Table Design */
+    .print-comp-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        font-size: 0.72rem;
+        background: #FFFFFF !important;
+    }
+
+    .print-comp-table th {
+        background-color: #EFEFEF !important;
+        border: 1px solid #000000 !important;
+        color: #000000 !important;
+        font-weight: 800 !important;
+        padding: 4px 6px;
+        text-align: left;
+        text-transform: uppercase;
+        font-size: 0.65rem;
+    }
+
+    .print-comp-table td {
+        border: 1px solid #000000 !important;
+        padding: 3px 6px;
+        color: #000000 !important;
+        font-weight: 500;
+    }
+
+    .print-table-symbol {
+        display: inline-block;
+        width: 24px;
+        height: 16px;
+        line-height: 14px;
+        text-align: center;
+        font-weight: 900;
+        font-size: 0.72rem;
+        border-radius: 4px;
+        border: 1px solid #000000;
+    }
+
+    .print-comp-empty {
+        font-size: 0.72rem;
+        font-style: italic;
+        color: #444444;
+        padding: 4px 8px;
+        background-color: #FFFFFF !important;
+        border: 1px dashed #777777;
+        border-radius: 6px;
+    }
+
+    /* Quick Legend Under Each Grid */
+    .print-quick-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: 0.62rem;
+        color: #333333;
+        margin-top: 4px;
+        padding-top: 3px;
+        border-top: 1px dotted #000000;
+    }
+
+    .print-quick-legend strong {
+        color: #000000;
+        font-weight: 800;
+    }
+
+    .print-quick-legend span {
+        margin-right: 4px;
+        font-weight: 600;
+    }
+
+    /* Print Legend of Explanations / Glossary */
     .print-legend {
-        margin-top: 40px;
-        border-top: 2px solid #333;
-        padding-top: 20px;
+        margin-top: 15px;
+        border: 1.5px solid #000000;
+        border-radius: 12px;
+        padding: 12px;
+        background: #FFFFFF !important;
     }
 
     .print-legend-title {
-        font-size: 1.2rem;
-        font-weight: 700;
+        font-size: 1rem;
+        font-weight: 800;
         text-transform: uppercase;
-        color: #111;
-        margin-bottom: 15px;
+        color: #000000;
+        margin-bottom: 10px;
         text-align: center;
         letter-spacing: 0.5px;
+        border-bottom: 1.5px solid #000000;
+        padding-bottom: 6px;
     }
 
     .print-legend-grid {
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
     }
 
     .print-legend-item {
-        padding: 10px 12px;
-        background: #F9FAFB;
-        border: 1px solid #E5E7EB;
+        padding: 6px 10px;
+        background: #FFFFFF !important;
+        border: 1px solid #000000;
         border-radius: 8px;
         display: flex;
         flex-direction: column;
         gap: 4px;
+        page-break-inside: avoid;
+        break-inside: avoid;
     }
 
     .print-legend-item-header {
@@ -961,24 +1306,31 @@ select:focus {
         gap: 8px;
     }
 
-    .print-legend-circle {
-        width: 11px;
-        height: 11px;
-        border-radius: 50%;
-        border: 1px solid rgba(0,0,0,0.15);
+    .print-legend-symbol-box {
+        display: inline-block;
+        width: 28px;
+        height: 18px;
+        line-height: 16px;
+        text-align: center;
+        font-weight: 900;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        border: 1.5px solid #000000;
+        box-sizing: border-box;
     }
 
     .print-legend-name {
-        font-weight: 700;
-        font-size: 0.85rem;
-        color: #111;
+        font-weight: 800;
+        font-size: 0.78rem;
+        color: #000000;
+        text-transform: uppercase;
     }
 
     .print-legend-desc {
-        font-size: 0.78rem;
+        font-size: 0.7rem;
         line-height: 1.4;
-        color: #4B5563;
-        padding-left: 19px;
+        color: #111111;
+        padding-left: 2px;
     }
 
     /* Smart Page-Break Mechanics */
@@ -991,4 +1343,50 @@ select:focus {
         page-break-inside: avoid;
         break-inside: avoid;
     }
+
+    .print-page-block {
+        page-break-after: always !important;
+        break-after: page !important;
+        box-sizing: border-box !important;
+        margin-bottom: 25px !important;
+    }
+    .print-page-block:last-child {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+    .print-escalafon-info-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        margin-bottom: 12px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+    .print-escalafon-summary-card {
+        flex: 1 !important;
+        border: 1.5px solid #000000 !important;
+        border-radius: 12px !important;
+        padding: 8px 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        background: #FFFFFF !important;
+        box-sizing: border-box !important;
+    }
+    .print-escalafon-chart-card {
+        width: 380px !important;
+        flex-shrink: 0 !important;
+        border: 1.5px solid #000000 !important;
+        border-radius: 12px !important;
+        padding: 4px !important;
+        background: #FFFFFF !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+    }
 }
+

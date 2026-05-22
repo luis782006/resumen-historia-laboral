@@ -35,6 +35,36 @@ document.addEventListener('DOMContentLoaded', () => {
         return explicacionesEstados[estNorm] || "Sin explicación disponible para este estado.";
     }
 
+    const coloresEstadosBW = {
+        "Aprobada": "#111111",                  // Negro (Sólido, Aprobado)
+        "SIN PRESENTACIÓN": "#FFFFFF",          // Blanco (Sin Datos)
+        "Pendiente de Aprobacion": "#555555",   // Gris Oscuro
+        "Pendiente a Aprobacion": "#555555",
+        "Error al Totalizar": "#888888",        // Gris Medio
+        "Pendiente de Configuracion": "#AAAAAA",// Gris Claro
+        "Pendiente a Configuracion": "#AAAAAA",
+        "Iniciada": "#CCCCCC",                  // Gris Muy Claro
+        "Rechazada": "#333333",                 // Gris Carbón
+        "Rechaza": "#333333",
+        "A Confirmar": "#777777",
+        "Cerrada": "#222222",
+        "Desconocido": "#DDDDDD"
+    };
+
+    function obtenerSimboloEstado(estado) {
+        const estNorm = estado ? estado.toString().trim() : '';
+        if (estNorm === "Aprobada") return "✔";
+        if (estNorm === "Pendiente de Aprobacion" || estNorm === "Pendiente a Aprobacion") return "PA";
+        if (estNorm === "Pendiente de Configuracion" || estNorm === "Pendiente a Configuracion") return "PC";
+        if (estNorm === "Error al Totalizar") return "Err";
+        if (estNorm === "Rechazada" || estNorm === "Rechaza") return "✖";
+        if (estNorm === "Iniciada") return "Ini";
+        if (estNorm === "A Confirmar") return "AC";
+        if (estNorm === "Cerrada") return "Cer";
+        if (estNorm === "SIN PRESENTACIÓN") return "—";
+        return "?";
+    }
+
     const months = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -69,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 esc.sac_count = 0;
                 esc.comp_count = 0;
                 esc.sac_details = [];
+                esc.comp_details = [];
             });
         });
     }
@@ -176,7 +207,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     periodos: [],
                     mensuales_count: 0,
                     sac_count: 0,
-                    comp_count: 0
+                    comp_count: 0,
+                    sac_details: [],
+                    comp_details: []
                 };
                 organismosData[orgCode].escalafones.push(esc);
             }
@@ -198,12 +231,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const tipoRaw = tipoRawValue.toString().trim().toLowerCase();
 
             esc.sac_details = esc.sac_details || [];
+            esc.comp_details = esc.comp_details || [];
 
             if (tipoRaw === 'sac') {
                 esc.sac_count += 1;
                 esc.sac_details.push({ periodo: periodoRaw, estado: estado });
             } else if (tipoRaw === 'complementaria') {
                 esc.comp_count += 1;
+                esc.comp_details.push({ periodo: periodoRaw, estado: estado });
             } else {
                 // 'mensual' or any unrecognized type counts as monthly
                 esc.mensuales_count += 1;
@@ -845,108 +880,108 @@ document.addEventListener('DOMContentLoaded', () => {
             const fileHeaderElement = document.getElementById('full-header');
             const fileTitle = fileHeaderElement ? fileHeaderElement.textContent : "Historial Laboral - Resumen";
 
+            // Helper to get monochrome class for cells
+            function obtenerClaseEstadoBW(estado) {
+                const estNorm = estado ? estado.toString().trim() : '';
+                if (estNorm === "Aprobada") return "cell-aprobada";
+                if (estNorm === "SIN PRESENTACIÓN") return "cell-sin-presentacion";
+                if (estNorm === "Error al Totalizar") return "cell-error";
+                if (estNorm === "Rechazada" || estNorm === "Rechaza") return "cell-rechazada";
+                return "cell-pendiente";
+            }
+
             // 1. Contenedor del Reporte de Auditoría
             const reportContainer = document.createElement('div');
             reportContainer.className = 'print-report-container';
 
-            // 2. Portada del Reporte / Encabezado Ejecutivo
+            // 2. Portada del Reporte / Encabezado Ejecutivo (Monocromático Puro)
             const headerDiv = document.createElement('div');
             headerDiv.className = 'print-header';
             headerDiv.innerHTML = `
                 <h1>Informe de Auditoría de Historia Laboral</h1>
-                <div style="font-size: 1.15rem; font-weight: 600; color: #1e788e; margin-top: 5px;">${fileTitle}</div>
+                <div style="font-size: 1.15rem; font-weight: 700; color: #000000; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px;">${fileTitle}</div>
                 <div class="print-header-meta">
-                    <span>Generado por: Caja de Jubilaciones TDF</span>
-                    <span>Fecha: ${formattedDate}</span>
+                    <span>Generado por: Caja de Jubilaciones y Pensiones TDF</span>
+                    <span>Fecha de Auditoría: ${formattedDate}</span>
                 </div>
             `;
             reportContainer.appendChild(headerDiv);
 
-            // 3. Procesar y Renderizar cada Organismo seleccionado
+            // 3. Procesar y Renderizar cada Escalafón seleccionado de forma auto-contenida
             const chartCreationQueue = [];
+            let pageIndex = 0;
 
-            selectedData.forEach((orgData, index) => {
+            selectedData.forEach((orgData) => {
                 const orgObj = organismosData[orgData.codigo];
-                const orgBlock = document.createElement('div');
-                orgBlock.className = 'print-org-block';
-                
-                // Si no es el primer organismo, forzar salto de página anterior para separar ordenadamente
-                if (index > 0) {
-                    orgBlock.className += ' report-page-break';
-                }
 
-                // Calcular datos agregados del organismo
-                let orgTotalDeclaraciones = 0;
-                const orgEstados = {};
-                orgData.escalafonesCodes.forEach(escCode => {
-                    const esc = orgObj.escalafones.find(e => e.codigo === escCode);
-                    if (esc) {
-                        orgTotalDeclaraciones += esc.total_declaraciones;
-                        Object.entries(esc.estados_totales).forEach(([est, cant]) => {
-                            orgEstados[est] = (orgEstados[est] || 0) + cant;
-                        });
-                    }
-                });
-
-                // Cabecera del Organismo
-                const orgHeader = document.createElement('div');
-                orgHeader.className = 'print-org-header';
-                orgHeader.innerHTML = `
-                    <h2 class="print-org-title">${orgObj.nombre}</h2>
-                    <span class="print-org-meta">${orgData.escalafonesCodes.length} Escalafones · ${orgTotalDeclaraciones} DDJJ</span>
-                `;
-                orgBlock.appendChild(orgHeader);
-
-                // Gráfico circular del Organismo (si se selecciona)
-                if (incCharts && orgTotalDeclaraciones > 0) {
-                    const chartWrapper = document.createElement('div');
-                    chartWrapper.className = 'print-org-chart-wrapper report-block-avoid';
-                    
-                    const chartId = `print-chart-org-${orgData.codigo}`;
-                    const chartDiv = document.createElement('div');
-                    chartDiv.id = chartId;
-                    chartDiv.style.cssText = 'width: 100%; max-width: 500px; height: 260px; margin: 0 auto;';
-                    
-                    chartWrapper.appendChild(chartDiv);
-                    orgBlock.appendChild(chartWrapper);
-
-                    // Agregar a la cola de dibujo de gráficos
-                    chartCreationQueue.push({
-                        id: chartId,
-                        labels: Object.keys(orgEstados),
-                        values: Object.values(orgEstados),
-                        title: orgObj.nombre
-                    });
-                }
-
-                // Renderizar cada Escalafón del organismo
                 orgData.escalafonesCodes.forEach(escCode => {
                     const esc = orgObj.escalafones.find(e => e.codigo === escCode);
                     if (!esc) return;
 
-                    const escBlock = document.createElement('div');
-                    escBlock.className = 'print-esc-block report-block-avoid';
+                    // Cada escalafón constituye una página independiente auto-contenida
+                    const pageBlock = document.createElement('div');
+                    pageBlock.className = 'print-page-block';
+                    
+                    if (pageIndex > 0) {
+                        pageBlock.className += ' report-page-break';
+                    }
+                    pageIndex++;
 
-                    // Clasificación de cumplimiento de DDJJ
+                    // Cabecera de Organismo (Presentación del Organismo)
+                    const orgHeader = document.createElement('div');
+                    orgHeader.className = 'print-org-header';
+                    orgHeader.innerHTML = `
+                        <h2 class="print-org-title">${orgObj.nombre}</h2>
+                        <span class="print-org-meta">Auditoría de Historia Laboral</span>
+                    `;
+                    pageBlock.appendChild(orgHeader);
+
+                    // Fila de información Ejecutiva (Resumen + Gráfico B&W)
+                    const infoRow = document.createElement('div');
+                    infoRow.className = 'print-escalafon-info-row';
+
                     const isMensualFull = esc.mensuales_count >= 12;
                     const isSacFull = esc.sac_count >= 2;
 
-                    const badgesHtml = `
-                        <div class="print-esc-badges">
-                            <span class="print-badge badge-mensual ${isMensualFull ? 'badge-full' : ''}">${esc.mensuales_count}/12 Mens.</span>
-                            <span class="print-badge badge-sac ${isSacFull ? 'badge-full' : ''}">${esc.sac_count}/2 SAC</span>
-                            <span class="print-badge badge-comp">Comp: ${esc.comp_count}</span>
+                    const summaryCardHtml = `
+                        <div class="print-esc-header" style="border-bottom: none; margin-bottom: 5px; padding-bottom: 0;">
+                            <h3 class="print-esc-title" style="font-size: 0.95rem;">${esc.nombre}</h3>
                         </div>
+                        <div class="print-esc-badges" style="margin-bottom: 8px;">
+                            <span class="print-badge ${isMensualFull ? 'badge-full' : ''}">${esc.mensuales_count}/12 Mensuales</span>
+                            <span class="print-badge ${isSacFull ? 'badge-full' : ''}">${esc.sac_count}/2 SAC</span>
+                            <span class="print-badge">Comp: ${esc.comp_count}</span>
+                        </div>
+                        <p style="font-size: 0.72rem; line-height: 1.45; margin: 0; color: #111;">
+                            Este escalafón registra un total de <strong>${esc.total_declaraciones}</strong> declaraciones juradas presentadas. El nivel de avance y el estado detallado de cada período previsional se presentan en las grillas de auditoría inferiores.
+                        </p>
                     `;
 
-                    escBlock.innerHTML = `
-                        <div class="print-esc-header">
-                            <h3 class="print-esc-title">${esc.nombre}</h3>
-                            ${badgesHtml}
-                        </div>
-                    `;
+                    let chartHtml = '';
+                    if (incCharts && esc.total_declaraciones > 0) {
+                        const chartId = `print-chart-esc-${orgData.codigo}-${esc.codigo}`;
+                        chartHtml = `
+                            <div class="print-escalafon-chart-card">
+                                <div id="${chartId}" style="width: 380px; height: 120px;"></div>
+                            </div>
+                        `;
+                        chartCreationQueue.push({
+                            id: chartId,
+                            labels: Object.keys(esc.estados_totales),
+                            values: Object.values(esc.estados_totales),
+                            title: esc.nombre
+                        });
+                    }
 
-                    // Matriz de Períodos de 14 Celdas (si se selecciona)
+                    infoRow.innerHTML = `
+                        <div class="print-escalafon-summary-card">
+                            ${summaryCardHtml}
+                        </div>
+                        ${chartHtml}
+                    `;
+                    pageBlock.appendChild(infoRow);
+
+                    // Matriz y Reporte de Períodos Monocromo (si se selecciona)
                     if (incGrid) {
                         const gridContainer = document.createElement('div');
                         gridContainer.className = 'print-grid-container';
@@ -970,14 +1005,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             });
                         }
 
-                        gridContainer.innerHTML = `
-                            <div class="print-grid-title">Matriz de Presentación Anual (Año ${year})</div>
-                        `;
+                        // ---- 1. MATRIZ DE DECLARACIONES MENSUALES (Ene a Dic) ----
+                        const mSection = document.createElement('div');
+                        mSection.className = 'print-matrix-section';
+                        mSection.innerHTML = `<div class="print-grid-title">Presentaciones Mensuales del Período (Año ${year})</div>`;
 
                         const gridDiv = document.createElement('div');
                         gridDiv.className = 'print-grid';
 
-                        // 12 celdas de Enero a Diciembre
                         const shortMonths = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
                         
                         for (let m = 1; m <= 12; m++) {
@@ -987,72 +1022,117 @@ document.addEventListener('DOMContentLoaded', () => {
                             // Buscar declaración mensual de este mes
                             const periodData = esc.periodos.find(p => p.periodo === periodCode);
                             const cell = document.createElement('div');
-                            cell.className = 'print-cell';
+                            
+                            const cellState = periodData ? Object.keys(periodData.estados)[0] : "SIN PRESENTACIÓN";
+                            cell.className = `print-cell ${obtenerClaseEstadoBW(cellState)}`;
 
                             const label = document.createElement('span');
                             label.className = 'print-cell-label';
                             label.textContent = shortMonths[m - 1];
                             cell.appendChild(label);
 
-                            const indicator = document.createElement('div');
-                            indicator.className = 'print-cell-status';
+                            const symbol = document.createElement('span');
+                            symbol.className = 'print-cell-symbol';
+                            symbol.textContent = obtenerSimboloEstado(cellState);
+                            cell.appendChild(symbol);
 
-                            if (periodData) {
-                                const activeState = Object.keys(periodData.estados)[0];
-                                const activeColor = coloresEstados[activeState] || getRandomColor(activeState);
-                                indicator.style.background = activeColor;
-                                cell.title = `${shortMonths[m - 1]} ${year}: ${activeState}`;
-                            } else {
-                                cell.className += ' print-cell-empty';
-                                cell.title = `${shortMonths[m - 1]} ${year}: SIN PRESENTACIÓN`;
-                            }
-
-                            cell.appendChild(indicator);
                             gridDiv.appendChild(cell);
                         }
+                        mSection.appendChild(gridDiv);
+                        gridContainer.appendChild(mSection);
 
-                        // 2 celdas para SAC (Aguinaldos)
+                        // ---- 2. SUELDO ANUAL COMPLEMENTARIO (SAC) ----
+                        const sacSection = document.createElement('div');
+                        sacSection.className = 'print-matrix-section';
+                        sacSection.innerHTML = `<div class="print-grid-title">Sueldo Anual Complementario (SAC)</div>`;
+
+                        const sacGrid = document.createElement('div');
+                        sacGrid.className = 'print-grid-sac';
+
                         for (let s = 1; s <= 2; s++) {
                             const cell = document.createElement('div');
-                            cell.className = 'print-cell';
+                            
+                            const sacItem = esc.sac_details[s - 1];
+                            const cellState = sacItem ? sacItem.estado : "SIN PRESENTACIÓN";
+                            const periodText = sacItem ? `(${sacItem.periodo})` : '';
+
+                            cell.className = `print-cell print-cell-sac ${obtenerClaseEstadoBW(cellState)}`;
 
                             const label = document.createElement('span');
                             label.className = 'print-cell-label';
-                            label.textContent = `SAC ${s}`;
+                            label.textContent = `SAC ${s} ${periodText}`;
                             cell.appendChild(label);
 
-                            const indicator = document.createElement('div');
-                            indicator.className = 'print-cell-status';
+                            const symbol = document.createElement('span');
+                            symbol.className = 'print-cell-symbol';
+                            symbol.textContent = obtenerSimboloEstado(cellState);
+                            cell.appendChild(symbol);
 
-                            // Buscar registro de SAC correspondiente
-                            const sacItem = esc.sac_details[s - 1];
-
-                            if (sacItem) {
-                                const activeColor = coloresEstados[sacItem.estado] || getRandomColor(sacItem.estado);
-                                indicator.style.background = activeColor;
-                                cell.title = `SAC ${s} (${sacItem.periodo}): ${sacItem.estado}`;
-                            } else {
-                                cell.className += ' print-cell-empty';
-                                cell.title = `SAC ${s}: SIN PRESENTACIÓN`;
-                            }
-
-                            cell.appendChild(indicator);
-                            gridDiv.appendChild(cell);
+                            sacGrid.appendChild(cell);
                         }
+                        sacSection.appendChild(sacGrid);
+                        gridContainer.appendChild(sacSection);
 
-                        gridContainer.appendChild(gridDiv);
-                        escBlock.appendChild(gridContainer);
+                        // ---- 3. LIQUIDACIONES COMPLEMENTARIAS ----
+                        const compSection = document.createElement('div');
+                        compSection.className = 'print-matrix-section';
+                        compSection.innerHTML = `<div class="print-grid-title">Liquidaciones Complementarias</div>`;
+
+                        if (esc.comp_details && esc.comp_details.length > 0) {
+                            const table = document.createElement('table');
+                            table.className = 'print-comp-table';
+                            table.innerHTML = `
+                                <thead>
+                                    <tr>
+                                        <th>Período de Liquidación</th>
+                                        <th style="width: 100px; text-align: center;">Indicador</th>
+                                        <th>Estado Final de Auditoría</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${esc.comp_details.map(item => `
+                                        <tr>
+                                            <td><strong>${item.periodo}</strong></td>
+                                            <td style="text-align: center;">
+                                                <span class="print-table-symbol ${obtenerClaseEstadoBW(item.estado)}">${obtenerSimboloEstado(item.estado)}</span>
+                                            </td>
+                                            <td>${item.estado}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            `;
+                            compSection.appendChild(table);
+                        } else {
+                            const emptyMsg = document.createElement('div');
+                            emptyMsg.className = 'print-comp-empty';
+                            emptyMsg.textContent = 'No se registran liquidaciones complementarias presentadas para este escalafón.';
+                            compSection.appendChild(emptyMsg);
+                        }
+                        gridContainer.appendChild(compSection);
+
+                        // ---- 4. LEYENDA RÁPIDA DE SÍMBOLOS (Al pie de cada matriz) ----
+                        const quickLegend = document.createElement('div');
+                        quickLegend.className = 'print-quick-legend';
+                        quickLegend.innerHTML = `
+                            <strong>Símbolos de Auditoría:</strong> 
+                            <span>[ ✔ ] Aprobada</span>
+                            <span>[ PA ] Pend. Aprobación</span>
+                            <span>[ PC ] Pend. Configuración</span>
+                            <span>[ Err ] Error Totalizar</span>
+                            <span>[ ✖ ] Rechazada</span>
+                            <span>[ — ] Sin Presentación</span>
+                        `;
+                        gridContainer.appendChild(quickLegend);
+
+                        pageBlock.appendChild(gridContainer);
                     }
 
-                    orgBlock.appendChild(escBlock);
+                    reportContainer.appendChild(pageBlock);
                 });
-
-                reportContainer.appendChild(orgBlock);
             });
 
-            // 4. Inyectar Guía de Explicación de Estados (si se selecciona)
+            // 4. Inyectar Guía de Explicación de Estados Completa (si se selecciona)
             if (incExplanations) {
-                // Obtener todos los estados únicos presentes en los organismos seleccionados
                 const uniqueStates = new Set();
                 selectedData.forEach(orgData => {
                     const orgObj = organismosData[orgData.codigo];
@@ -1070,12 +1150,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     let legendItemsHtml = '';
                     Array.from(uniqueStates).sort().forEach(state => {
-                        const stateColor = coloresEstados[state] || getRandomColor(state);
                         const explicacion = obtenerExplicacion(state);
+                        const simbolo = obtenerSimboloEstado(state);
                         legendItemsHtml += `
                             <div class="print-legend-item">
                                 <div class="print-legend-item-header">
-                                    <div class="print-legend-circle" style="background: ${stateColor};"></div>
+                                    <span class="print-legend-symbol-box ${obtenerClaseEstadoBW(state)}">${simbolo}</span>
                                     <span class="print-legend-name">${state}</span>
                                 </div>
                                 <div class="print-legend-desc">${explicacion}</div>
@@ -1084,7 +1164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     legendDiv.innerHTML = `
-                        <div class="print-legend-title">Guía Metodológica de Estados</div>
+                        <div class="print-legend-title">Guía Metodológica y Glosario de Estados</div>
                         <div class="print-legend-grid">
                             ${legendItemsHtml}
                         </div>
@@ -1095,10 +1175,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             printArea.appendChild(reportContainer);
 
-            // 5. Renderizar Gráficos Plotly en la cola (con colores adaptados para impresión clara)
+            // 5. Renderizar Gráficos Plotly en la cola (con escala de grises de alto contraste B&W)
             if (incCharts && chartCreationQueue.length > 0) {
                 chartCreationQueue.forEach(item => {
-                    const colors = item.labels.map(lbl => coloresEstados[lbl] || getRandomColor(lbl));
+                    const colors = item.labels.map(lbl => coloresEstadosBW[lbl] || '#888888');
                     
                     const data = [{
                         values: item.values,
@@ -1107,32 +1187,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         hole: 0.35,
                         marker: {
                             colors: colors,
-                            line: { color: '#FFFFFF', width: 1.5 }
+                            line: { color: '#000000', width: 2 }
                         },
                         textinfo: 'label+value',
                         textposition: 'inside',
-                        insidetextfont: { color: '#FFFFFF', size: 9 },
+                        insidetextfont: { color: '#FFFFFF', size: 9, weight: 'bold' },
                         automargin: true,
                         hovertemplate: '<b>%{label}</b><br>Cantidad: %{value}<extra></extra>'
                     }];
 
                     const layout = {
                         title: {
-                            text: `<b>Distribución de Estados</b><br><span style="font-size: 11px; color: #555;">${item.title}</span>`,
-                            font: { color: '#111111', size: 13 }
+                            text: `<b>Resumen de Estados</b> - <span style="font-size: 10px; color: #333;">${item.title}</span>`,
+                            font: { color: '#000000', size: 11 }
                         },
                         showlegend: true,
                         legend: {
                             orientation: 'v',
-                            x: 0.85,
+                            x: 0.88,
                             y: 0.5,
-                            font: { color: '#222222', size: 9 }
+                            font: { color: '#000000', size: 8.5 }
                         },
-                        margin: { t: 40, b: 20, l: 10, r: 110 },
-                        paper_bgcolor: '#FAFAFA',
-                        plot_bgcolor: '#FAFAFA',
-                        width: 480,
-                        height: 230
+                        margin: { t: 30, b: 10, l: 10, r: 105 },
+                        paper_bgcolor: '#FFFFFF',
+                        plot_bgcolor: '#FFFFFF',
+                        width: 400,
+                        height: 150
                     };
 
                     Plotly.newPlot(item.id, data, layout, {staticPlot: true});
